@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#07111D">
+<meta name="description" content="Personal CRM para prospectos, seguimientos, agenda y oportunidades.">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Personal CRM">
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" href="./icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
+<title>Personal CRM</title>
+<style>
+/* ===== Jaguar Metallic Blue (v0.4.2) — paleta centralizada =====
+   Las variables --color-* son la fuente única. Los alias antiguos (--bg, --card, --ink, --mute, --line, --acc, --acc2, --warn, --ok, --onacc)
+   se mantienen porque el marcado generado por JavaScript todavía los usa. */
+:root{
+--color-obsidian:#07111D;--color-night-blue:#10243A;--color-metallic-blue:#1769AA;--color-electric-blue:#368FCB;--color-silver:#A8BACB;--color-ice-white:#E8EDF2;
+--color-background:#091522;--color-surface:#10243A;--color-surface-alt:#172E45;--color-border:rgba(168,186,203,.16);
+--color-text-primary:#E8EDF2;--color-text-secondary:#A8BACB;--color-text-muted:#71869B;
+--color-success:#36B889;--color-warning:#E5AA52;--color-danger:#E36B75;
+--color-primary:#1769AA;--color-primary-hover:#368FCB;--color-focus:rgba(54,143,203,.35);
+--color-accent-text:#6DB4E3;--color-field:#0B1A2B;--field-border:rgba(168,186,203,.26);--color-on-primary:#F2F6FA;--color-on-hover:#07111D;
+--tint-accent:rgba(54,143,203,.14);--tint-danger:rgba(227,107,117,.12);--tint-warning:rgba(229,170,82,.14);
+--grad-primary:linear-gradient(180deg,#1A6FB2,#145F9A);--grad-hover:linear-gradient(180deg,#4BA0D6,#368FCB);
+--sheen:linear-gradient(180deg,rgba(232,237,242,.035),rgba(232,237,242,0) 45%);
+--chrome-line:linear-gradient(90deg,transparent,rgba(168,186,203,.5),transparent);
+--shadow-card:inset 0 1px 0 rgba(232,237,242,.04),0 6px 18px rgba(0,0,0,.26);--shadow-up:0 -8px 24px rgba(0,0,0,.35);
+--nav-bg:linear-gradient(180deg,#0C1D30,#07111D);
+color-scheme:dark;
+--bg:var(--color-background);--card:var(--color-surface);--ink:var(--color-text-primary);--mute:var(--color-text-secondary);--line:var(--color-border);--acc:var(--color-accent-text);--acc2:var(--tint-accent);--warn:var(--color-danger);--ok:var(--color-success);--onacc:var(--color-obsidian);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+:root[data-theme="light"]{
+color-scheme:light;
+--color-background:#E6ECF2;--color-surface:#F8FAFC;--color-surface-alt:#EAF0F6;--color-border:rgba(16,36,58,.15);
+--color-text-primary:#0E2236;--color-text-secondary:#47607A;--color-text-muted:#6B8095;
+--color-success:#17734F;--color-warning:#A8691A;--color-danger:#B93A46;--color-focus:rgba(23,105,170,.3);
+--color-accent-text:#14609F;--color-field:#FFFFFF;--field-border:rgba(16,36,58,.28);
+--tint-accent:rgba(23,105,170,.1);--tint-danger:rgba(185,58,70,.1);--tint-warning:rgba(168,105,26,.12);
+--sheen:none;--shadow-card:0 1px 2px rgba(16,36,58,.08),0 4px 14px rgba(16,36,58,.07);--shadow-up:0 -4px 16px rgba(16,36,58,.1);
+--nav-bg:#F8FAFC;--onacc:#FFFFFF}
+html{scroll-padding-top:env(safe-area-inset-top,0px);background:var(--color-background)}
+*,*::before,*::after{box-sizing:border-box}
+*{scrollbar-width:thin;scrollbar-color:rgba(168,186,203,.3) transparent}
+::selection{background:var(--color-focus)}
+body{margin:0;min-height:100vh;color:var(--ink);font:15px/1.5 -apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;background:radial-gradient(900px 420px at 12% -8%,rgba(23,105,170,.16),transparent 70%),var(--bg)}
+:root[data-theme="light"] body{background:var(--bg)}
+#app{display:flex;min-height:100vh}
+.side{width:244px;padding:22px 14px;border-right:1px solid var(--line);background:var(--nav-bg);position:sticky;top:0;height:100vh;display:none;flex-direction:column;gap:3px}
+.brand{position:relative;font-size:19px;font-weight:700;letter-spacing:-.01em;padding:0 10px 16px;margin-bottom:10px;color:var(--ink)}
+.brand::after{content:"";position:absolute;left:10px;right:10px;bottom:0;height:1px;background:var(--chrome-line)}
+.brand small{display:block;font-size:12px;font-weight:400;color:var(--mute);letter-spacing:.02em}
+.side button{display:flex;gap:10px;align-items:center;border:1px solid transparent;background:none;color:var(--mute);padding:10px 12px;border-radius:10px;font:inherit;cursor:pointer;text-align:left;min-height:44px;transition:background .18s,color .18s,border-color .18s}
+.side button:hover{color:var(--ink);background:var(--tint-accent)}
+.side button.on{background:var(--grad-primary);border-color:rgba(54,143,203,.5);color:var(--color-on-primary);font-weight:600;box-shadow:inset 0 1px 0 rgba(255,255,255,.14)}
+main{flex:1;min-width:0;padding:18px 16px 100px;max-width:960px;margin:0 auto;width:100%}
+h1{font-size:26px;font-weight:650;letter-spacing:-.02em;margin:0 0 2px;color:var(--ink)}
+h2{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600;letter-spacing:.01em;margin:24px 0 10px;color:var(--ink)}
+h2::before{content:"";width:3px;height:14px;border-radius:2px;background:linear-gradient(180deg,var(--color-electric-blue),var(--color-metallic-blue));flex:none}
+.sub{color:var(--mute);margin:0 0 16px}.sub::first-letter{text-transform:uppercase}
+.tabs{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--color-surface);border-top:1px solid var(--line);box-shadow:var(--shadow-up);padding:4px 2px calc(4px + env(safe-area-inset-bottom,0px));z-index:5}
+.tabs button{position:relative;flex:1;min-width:0;min-height:48px;border:0;background:none;color:var(--mute);font:inherit;font-size:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:2px 0;cursor:pointer;transition:color .18s}
+.tabs button span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tabs button.on{color:var(--color-accent-text);font-weight:600}
+.tabs button.on::before{content:"";position:absolute;top:-5px;left:24%;right:24%;height:2px;border-radius:0 0 2px 2px;background:var(--color-electric-blue)}
+svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.card{background:var(--sheen),var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px;overflow-wrap:anywhere;box-shadow:var(--shadow-card);transition:border-color .18s,transform .15s}
+.card[data-a]:active{transform:scale(.995)}
+@media(hover:hover){.card[data-a]:hover{border-color:rgba(54,143,203,.5);transform:translateY(-1px)}}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:6px}
+.kpi{position:relative;overflow:hidden;background:var(--sheen),var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;min-width:0;box-shadow:var(--shadow-card)}
+.kpi::before{content:"";position:absolute;left:14px;right:14px;top:0;height:1px;background:var(--chrome-line)}
+.kpi b{display:block;font-size:24px;font-weight:650;letter-spacing:-.02em;overflow-wrap:anywhere;font-variant-numeric:tabular-nums;color:var(--ink)}.kpi span{color:var(--mute);font-size:13px}
+.row{display:flex;align-items:center;gap:8px}.row.sp{justify-content:space-between}.row.wrap{flex-wrap:wrap}.grow{flex:1;min-width:0}
+.mute{color:var(--mute);font-size:13px}.warn{color:var(--color-danger)}
+.btn{border:1px solid var(--line);background:var(--color-surface-alt);color:var(--ink);padding:9px 14px;border-radius:10px;font:inherit;cursor:pointer;min-height:44px;display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:background .18s,border-color .18s,color .18s,transform .12s,box-shadow .18s}
+.btn:hover{border-color:var(--color-electric-blue)}
+.btn:active{transform:translateY(1px)}
+.btn.p{background:var(--grad-primary);border-color:rgba(54,143,203,.5);color:var(--color-on-primary);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 2px 8px rgba(7,17,29,.3)}
+.btn.p:hover{background:var(--grad-hover);border-color:#5BAADF;color:var(--color-on-hover)}
+.btn.sm{padding:6px 10px;min-height:44px;min-width:44px;font-size:13px}
+.btn.d{color:var(--color-danger)}.btn.d:hover{border-color:var(--color-danger);background:var(--tint-danger)}
+a.btn{text-decoration:none;color:var(--ink)}
+input,select,textarea{width:100%;font:inherit;color:var(--ink);background:var(--color-field);border:1px solid var(--field-border);border-radius:10px;padding:9px 11px;min-height:44px;transition:border-color .18s,box-shadow .18s}
+input::placeholder,textarea::placeholder{color:var(--color-text-muted);opacity:1}
+option{background:var(--color-surface);color:var(--ink)}
+textarea{min-height:140px;font:12px/1.4 ui-monospace,Menlo,Consolas,monospace}
+label{display:block;font-size:13px;color:var(--mute);margin:10px 0 4px}
+:focus-visible{outline:2px solid var(--color-electric-blue);outline-offset:2px}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--color-electric-blue);box-shadow:0 0 0 3px var(--color-focus)}
+input:user-invalid,select:user-invalid,textarea:user-invalid{border-color:var(--color-danger)}
+input:user-invalid:focus{box-shadow:0 0 0 3px var(--tint-danger)}
+summary{cursor:pointer}
+.chk{width:32px;height:32px;border-radius:9px;border:1.5px solid var(--mute);background:none;color:var(--onacc);display:grid;place-items:center;cursor:pointer;flex:none;padding:0;transition:background .18s,border-color .18s}
+.chk:hover{border-color:var(--color-electric-blue)}
+.chk.on{background:var(--color-success);border-color:var(--color-success)}
+.done .t{text-decoration:line-through;color:var(--mute)}
+.tag{display:inline-block;font-size:11px;padding:1px 8px;border-radius:99px;background:var(--tint-accent);color:var(--color-accent-text);margin-left:6px}
+.tag.demo{background:transparent;border:1px dashed var(--mute);color:var(--mute)}
+.tag.hi{background:var(--tint-warning);color:var(--color-warning)}
+.tag.dnc{background:var(--tint-danger);color:var(--color-danger);border:1px solid var(--color-danger)}
+.empty{text-align:center;color:var(--mute);padding:24px 12px;border:1px dashed var(--line);border-radius:14px;margin-bottom:10px}
+.bar{height:8px;border-radius:99px;background:var(--tint-accent);overflow:hidden;margin-top:4px}.bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#145F9A,var(--color-electric-blue));transition:width .35s}
+.cols{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px}.col{min-width:240px;flex:1}
+.note{background:var(--tint-accent);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:14px;font-size:13px}
+.note.err{background:var(--tint-danger);border-left:4px solid var(--color-danger)}
+.msg{position:sticky;top:6px;z-index:4;box-shadow:0 6px 18px rgba(0,0,0,.3)}
+.note.msg{background:linear-gradient(var(--tint-accent),var(--tint-accent)),var(--color-surface)}
+.note.msg.err{background:linear-gradient(var(--tint-danger),var(--tint-danger)),var(--color-surface)}
+.st{display:flex;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px solid var(--line);font-size:14px}
+.seg{display:flex;gap:6px;overflow-x:auto;margin:0 0 12px;padding-bottom:2px}.seg button{flex:none;border:1px solid var(--line);background:var(--color-surface-alt);color:var(--ink);border-radius:99px;padding:8px 14px;font:inherit;font-size:14px;min-height:44px;cursor:pointer;transition:background .18s,border-color .18s,color .18s}.seg button:hover{border-color:var(--color-electric-blue)}.seg button.on{background:var(--grad-primary);border-color:rgba(54,143,203,.5);color:var(--color-on-primary)}
+.tl{border-left:2px solid rgba(54,143,203,.4);padding:2px 0 12px 12px;margin-left:4px;overflow-wrap:anywhere}
+.chip{display:flex;gap:7px;align-items:center;font-size:12px;color:var(--mute);margin:0 0 10px}.chip i{width:8px;height:8px;border-radius:50%;background:var(--mute);flex:none}.chip.ok i{background:var(--color-success)}.chip.err{color:var(--color-danger)}.chip.err i{background:var(--color-danger)}
+@media(min-width:760px){.side{display:flex}.tabs{display:none}main{padding:30px 32px 40px}.grid{grid-template-columns:repeat(4,1fr)}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
+
+/* ===== Extensión: Digital Minimalism (detalles tecnológicos ~20 %) =====
+   Solo opacity/transform en animaciones; sin blur ni filtros; breves y finitas (aptas para Android). */
+@keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+body.nv main>*{animation:rise .24s ease-out both}
+.note.msg{animation:rise .2s ease-out both}
+.side button.on::after{content:"";margin-left:auto;width:6px;height:6px;border-radius:50%;background:#A9D6F3;box-shadow:0 0 8px var(--color-electric-blue)}
+.kpi::after{content:"";position:absolute;left:0;top:14px;width:2px;height:16px;border-radius:0 2px 2px 0;background:var(--color-electric-blue)}
+.kpi span,.lbl{display:block;font-size:12px;letter-spacing:.03em;color:var(--mute)}
+.kpi b,.big{font-size:28px;line-height:1.15;font-weight:600;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.big{display:block;color:var(--ink)}
+.card .card{box-shadow:none;background:var(--color-surface-alt);border-color:var(--line)}
+.pulse{display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden}
+.pulse::before{content:"";position:absolute;left:14px;right:14px;top:0;height:1px;background:var(--chrome-line)}
+.pulse svg.spark{width:140px;height:36px;flex:none;overflow:visible}
+.pulse svg.spark rect{fill:var(--color-metallic-blue);opacity:.55}.pulse svg.spark rect.now{fill:var(--color-electric-blue);opacity:1}
+.trend{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--mute)}.trend svg.i{width:16px;height:16px}
+.trend.up{color:var(--color-success)}.trend.down{color:var(--color-warning)}
+.empty::before{content:"";display:block;width:32px;height:1px;margin:0 auto 14px;background:var(--chrome-line)}
+.chip:not(.ok):not(.err) i{animation:blink .9s ease-in-out 3}
+.chip.ok i{box-shadow:0 0 6px rgba(54,184,137,.6)}
+.sub[role=status]::after{content:"";display:inline-block;width:6px;height:6px;margin-left:8px;border-radius:50%;background:var(--color-electric-blue);animation:blink .9s ease-in-out 6}
+.bar{height:6px}
+details>summary{transition:color .18s}details[open]>summary{color:var(--ink)}
+@media(min-width:760px){main{padding-top:34px}.kpi{padding:16px 18px}.card{padding:16px 18px}}
+
+/* ===== v0.5: WhatsApp y Google Calendar ===== */
+.btn.wa{color:var(--color-success);padding:0;min-width:44px}.btn.wa:hover{border-color:var(--color-success);background:rgba(54,184,137,.12)}
+.waic{display:grid;place-items:center;width:28px;height:28px;border-radius:8px;background:rgba(54,184,137,.14);color:var(--color-success)}
+.waic svg.i{width:18px;height:18px}
+.lnk{display:inline-flex;align-items:center;gap:6px;border:0;background:none;color:var(--color-accent-text);font:inherit;font-size:13px;padding:8px 0;min-height:40px;cursor:pointer;transition:color .18s}
+.lnk{text-align:left}.lnk:hover{color:var(--color-electric-blue)}.lnk svg.i{width:16px;height:16px}
+.gcp{border:1px solid var(--line);border-left:2px solid var(--color-electric-blue);border-radius:12px;background:var(--color-surface-alt);padding:12px 14px;margin:-4px 0 10px;animation:rise .2s ease-out both}
+.gcp .row .grow{min-width:120px}
+
+#pwa-install{position:fixed;right:14px;top:calc(12px + env(safe-area-inset-top,0px));z-index:20;display:none;border:1px solid rgba(54,143,203,.65);border-radius:999px;padding:9px 13px;background:linear-gradient(180deg,#1A6FB2,#145F9A);color:#F2F6FA;font:600 13px sans-serif;box-shadow:0 4px 14px rgba(0,0,0,.28)}
+#pwa-install.show{display:block}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+/* ===== Personal CRM v0.4 — archivo único, modular =====
+   Capas: 1) modelo, validación y migración  2) persistencia local  3) formularios y acciones  4) vistas y enrutador.
+   Persistencia: IndexedDB → localStorage → solo respaldos manuales. Esquema de datos v2 (migra desde v1 = Personal CRM v0.3). */
+const SCHEMA=2,LOC='es-NI';
+const STAGES=[['nuevo','Nuevo contacto'],['iniciado','Contacto iniciado'],['conversacion','Conversación inicial'],['descubrimiento','Descubrimiento'],['pres_pend','Presentación pendiente'],['pres_hecha','Presentación realizada'],['seguimiento','Seguimiento y dudas'],['evaluacion','Evaluación'],['decision','Decisión pendiente'],['incorporado','Incorporado'],['cliente','Cliente'],['no_interesado','No interesado'],['pausa','En pausa / futuro'],['no_contactar','No contactar']];
+const CLOSED=['incorporado','cliente','no_interesado','pausa','no_contactar'];
+const SOURCES=['Facebook','Instagram','TikTok','WhatsApp','Recomendación','Evento o taller','Contacto presencial','Formulario','Otra'];
+const CHANNELS=['WhatsApp','Instagram','Facebook','TikTok','Llamada','Presencial','Videollamada','Correo electrónico','Otro'];
+const ITYPES=[['frio','Prospección en frío'],['conversacion','Conversación inicial'],['seguimiento','Seguimiento'],['llamada','Llamada'],['videollamada','Videollamada'],['presentacion','Presentación'],['reunion','Reunión o taller'],['dudas','Resolución de dudas'],['mensaje','Mensaje'],['otra','Otra']];
+const ATYPES=[['seguimiento','Seguimiento'],['llamada','Llamada'],['videollamada','Videollamada'],['presentacion','Presentación'],['reunion','Reunión'],['taller','Taller'],['tarea','Tarea personal'],['otra','Otra']];
+const PRIOS=[['alta','Alta'],['media','Media'],['baja','Baja']],STATUS=[['pendiente','Pendiente'],['completada','Completada'],['cancelada','Cancelada']];
+const ETAPAS=[['Lead','Prospecto'],['Contacted','Contactado'],['Proposal','Propuesta'],['Won','Ganada'],['Lost','Perdida']];
+const TIPOS=[['Call','Llamada'],['Message','Mensaje'],['Meeting','Reunión'],['Note','Nota']];
+const INTEREST=[['','Sin indicar'],['alto','Alto'],['medio','Medio'],['bajo','Bajo']];
+const IND=[['nuevos','Prospectos nuevos'],['frio','Prospecciones en frío'],['conv','Conversaciones iniciadas'],['llamadas','Llamadas realizadas'],['pres_env','Presentaciones enviadas'],['pres_vis','Presentaciones vistas'],['pres_hec','Presentaciones realizadas'],['seg','Seguimientos realizados'],['reun','Reuniones o talleres realizados']];
+const MAN=['pres_env','pres_vis'],PERIODS=[['dia','Diaria'],['semana','Semanal']];
+const ENUMS={stage:STAGES,itype:ITYPES,atype:ATYPES,prio:PRIOS,status:STATUS,ostage:ETAPAS,ind:IND,mind:IND.filter(x=>MAN.includes(x[0])),period:PERIODS,interest:INTEREST};
+const COLS1=['contacts','opps','tasks','acts'],NOMBRES1={contacts:'Contacto',opps:'Oportunidad',tasks:'Tarea',acts:'Actividad'};
+const L=(a,v)=>(a.find(x=>x[0]===v)||[v,v])[1];
+const pad=n=>String(n).padStart(2,'0');
+const ymd=x=>x.getFullYear()+'-'+pad(x.getMonth()+1)+'-'+pad(x.getDate());
+const iso=o=>{const x=new Date();x.setDate(x.getDate()+o);return ymd(x)};
+const T=()=>iso(0);
+const addD=(d,n)=>{const x=new Date(d+'T00:00');x.setDate(x.getDate()+n);return ymd(x)};
+const wk=()=>{const s=addD(T(),-((new Date().getDay()+6)%7));return[s,addD(s,6)]};
+const loc=i=>{const x=new Date(i);return ymd(x)+'T'+pad(x.getHours())+':'+pad(x.getMinutes())};
+const uid=p=>{try{return p+'_'+crypto.randomUUID()}catch(e){}const a=new Uint8Array(12);try{crypto.getRandomValues(a)}catch(e){for(let i=0;i<12;i++)a[i]=Math.random()*256}return p+'_'+[...a].map(x=>x.toString(16).padStart(2,'0')).join('')};
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $=id=>document.getElementById(id);
+const fdate=d=>d?new Date(d+'T00:00').toLocaleDateString(LOC,{weekday:'short',day:'numeric',month:'short'}):'';
+const money=n=>'$'+(Number(n)||0).toLocaleString(LOC);
+const okDate=s=>{if(typeof s!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(s))return false;const[y,m,d]=s.split('-').map(Number),x=new Date(Date.UTC(y,m-1,d));return x.getUTCFullYear()===y&&x.getUTCMonth()===m-1&&x.getUTCDate()===d};
+const okTime=s=>/^([01]\d|2[0-3]):[0-5]\d$/.test(s);
+/* Validación pura: devuelve {er:[errores]} o {er:[],data:copia normalizada}. No toca el estado. */
+function validateV1(d){
+ const er=[],out={v:1},isO=x=>x&&typeof x==='object'&&!Array.isArray(x);
+ if(!isO(d))return{er:['El contenido debe ser un objeto JSON.']};
+ if(d.v!==1)er.push(`Versión de esquema no compatible (se esperaba ${1}).`);
+ if(d.app!==undefined&&d.app!=='personal-crm')er.push('El archivo no pertenece a Personal CRM.');
+ if(d.exportedAt!==undefined&&(typeof d.exportedAt!=='string'||isNaN(Date.parse(d.exportedAt))))er.push('La fecha de exportación («exportedAt») no es válida.');
+ const src=k=>Array.isArray(d[k])?d[k]:[];
+ COLS1.forEach(k=>{if(!Array.isArray(d[k]))er.push(`Falta la lista «${k}» o no es una lista.`)});
+ const cids=new Set(src('contacts').filter(r=>isO(r)&&typeof r.id==='string').map(r=>r.id));
+ COLS1.forEach(k=>{out[k]=[];const seen=new Set();
+  src(k).forEach((r,i)=>{const w=`${NOMBRES1[k]} n.º ${i+1}`,e=m=>er.push(`${w}: ${m}`);
+   if(!isO(r))return e('no es un objeto.');
+   if(typeof r.id!=='string'||!/^[\w-]{1,40}$/.test(r.id))e('identificador no válido.');
+   else if(seen.has(r.id))e(`identificador duplicado («${r.id}»).`);else seen.add(r.id);
+   const s=(f,req)=>{const v=r[f];if(v===undefined||v===null){if(req)e(`falta «${f}».`);return''}
+    if(typeof v!=='string'){e(`«${f}» debe ser texto.`);return''}if(req&&!v.trim())e(`«${f}» no puede estar vacío.`);return v};
+   const n={id:r.id};
+   if(k==='contacts')Object.assign(n,{name:s('name',1),company:s('company'),email:s('email'),phone:s('phone'),notes:s('notes')});
+   else{n.contactId=s('contactId');if(n.contactId&&!cids.has(n.contactId))e(`el contacto «${n.contactId}» no existe.`);
+    if(k==='opps'){n.title=s('title',1);n.value=r.value;
+     if(typeof r.value!=='number'||!isFinite(r.value)||r.value<0)e('«value» debe ser un número igual o mayor que cero.');
+     n.stage=r.stage;if(!ETAPAS.some(x=>x[0]===r.stage))e(`etapa no válida («${r.stage}»).`)}
+    if(k==='tasks'){n.title=s('title',1);n.date=r.date;if(!okDate(r.date))e('fecha no válida (se espera AAAA-MM-DD).');
+     n.done=r.done;if(typeof r.done!=='boolean')e('«done» debe ser verdadero o falso.')}
+    if(k==='acts'){n.type=r.type;if(!TIPOS.some(x=>x[0]===r.type))e(`tipo no válido («${r.type}»).`);
+     n.note=s('note',1);n.date=r.date;if(!okDate(r.date))e('fecha no válida (se espera AAAA-MM-DD).')}}
+   if(r.demo===true)n.demo=true;else if(r.demo!==undefined&&typeof r.demo!=='boolean')e('«demo» debe ser verdadero o falso.');
+   out[k].push(n)})});
+ return er.length?{er}:{er,data:out};
+}
+
+/* 1. MODELO v2 */
+const SPEC={
+ contacts:{name:'S',phone:'s',email:'s',company:'s',city:'s',country:'s',source:'s',channel:'s',occupation:'s',motivation:'s',notes:'s',firstContact:'D',stage:'E:stage',nextAction:'s',nextDate:'D',dnc:'b',archived:'b',demo:'b'},
+ ints:{contactId:'r:contacts',oppId:'r:opps',date:'d',time:'t',channel:'s',type:'E:itype',summary:'s',result:'s',interest:'e:interest',objections:'s',nextAction:'s',nextDate:'D',notes:'s',demo:'b'},
+ stageHist:{contactId:'R:contacts',from:'e:stage',to:'E:stage',at:'i',reason:'s'},
+ tasks:{title:'S',type:'E:atype',date:'d',time:'t',priority:'E:prio',status:'E:status',contactId:'r:contacts',oppId:'r:opps',desc:'s',notes:'s',demo:'b'},
+ opps:{title:'S',contactId:'r:contacts',desc:'s',value:'n',stage:'E:ostage',notes:'s',created:'D',updated:'D',demo:'b'},
+ oppHist:{oppId:'R:opps',from:'e:ostage',to:'E:ostage',at:'i'},
+ goals:{key:'E:ind',period:'E:period',target:'n'},
+ manual:{key:'E:mind',date:'d',n:'n'}};
+const COLS=Object.keys(SPEC),NOMBRES={contacts:'Prospecto',ints:'Interacción',stageHist:'Cambio de etapa',tasks:'Actividad',opps:'Oportunidad',oppHist:'Cambio de oportunidad',goals:'Meta',manual:'Resultado manual'};
+const empty0=()=>{const o={v:SCHEMA};COLS.forEach(k=>o[k]=[]);return o};
+const TM={Call:'llamada',Message:'mensaje',Meeting:'reunion',Note:'otra'};
+/* Migración v1 (Personal CRM v0.3) → v2. Conserva ids y relaciones; no inventa datos. */
+function migrate1(d){const dm=r=>r.demo?{demo:true}:{};return{v:SCHEMA,app:'personal-crm',
+ contacts:d.contacts.map(c=>({...c,stage:'nuevo'})),
+ ints:d.acts.map(a=>({id:a.id,contactId:a.contactId,date:a.date,type:TM[a.type],summary:a.note,...dm(a)})),
+ stageHist:[],tasks:d.tasks.map(t=>({id:t.id,title:t.title,date:t.date,contactId:t.contactId,type:'tarea',priority:'media',status:t.done?'completada':'pendiente',...dm(t)})),
+ opps:d.opps.map(o=>({...o})),oppHist:[],goals:[],manual:[]}}
+function validate(d){
+ const isO=x=>x&&typeof x==='object'&&!Array.isArray(x);
+ if(isO(d)&&d.v===1){const r=validateV1(d);if(r.er.length)return r;const m=validate(migrate1(r.data));
+  return m.er.length?{er:['La migración desde la versión anterior produjo datos inválidos.'].concat(m.er)}:{er:[],data:m.data,migrated:true}}
+ const er=[],out={v:SCHEMA};
+ if(!isO(d))return{er:['El contenido debe ser un objeto JSON.']};
+ if(d.v!==SCHEMA)er.push(`Versión de esquema no compatible (se esperaba ${SCHEMA}).`);
+ if(d.app!==undefined&&d.app!=='personal-crm')er.push('El archivo no pertenece a Personal CRM.');
+ if(d.exportedAt!==undefined&&(typeof d.exportedAt!=='string'||isNaN(Date.parse(d.exportedAt))))er.push('La fecha de exportación («exportedAt») no es válida.');
+ const src=k=>Array.isArray(d[k])?d[k]:[],ids={};
+ COLS.forEach(k=>{if(!Array.isArray(d[k]))er.push(`Falta la lista «${k}» o no es una lista.`);ids[k]=new Set(src(k).filter(r=>isO(r)&&typeof r.id==='string').map(r=>r.id))});
+ COLS.forEach(k=>{out[k]=[];const seen=new Set();
+  src(k).forEach((r,i)=>{const w=`${NOMBRES[k]} n.º ${i+1}`,e=m=>er.push(`${w}: ${m}`);
+   if(!isO(r))return e('no es un objeto.');
+   if(typeof r.id!=='string'||!/^[\w-]{1,64}$/.test(r.id))e('identificador no válido.');
+   else if(seen.has(r.id))e(`identificador duplicado («${r.id}»).`);else seen.add(r.id);
+   const n={id:r.id};
+   for(const[f,c]of Object.entries(SPEC[k])){const v=r[f],t=c[0],a=c.slice(2),miss=v===undefined||v===null||v==='',bad=m=>e(`«${f}» ${m}.`);
+    if(t==='b'){if(v!==undefined&&typeof v!=='boolean')bad('debe ser verdadero o falso');if(v===true)n[f]=true;continue}
+    if(miss){if('SdiERn'.includes(t))bad('es obligatorio');n[f]=t==='n'?0:'';continue}
+    if('SsdDtiEe'.includes(t)&&typeof v!=='string')bad('debe ser texto');
+    else if(t==='S'&&!v.trim())bad('no puede estar vacío');
+    else if('dD'.includes(t)&&!okDate(v))bad('no es una fecha válida (AAAA-MM-DD)');
+    else if(t==='t'&&!okTime(v))bad('no es una hora válida (HH:MM)');
+    else if(t==='i'&&isNaN(Date.parse(v)))bad('no es una fecha y hora válidas');
+    else if('Ee'.includes(t)&&!ENUMS[a].some(x=>x[0]===v))bad(`valor no válido («${v}»)`);
+    else if('Rr'.includes(t)&&!ids[a].has(v))bad(`hace referencia a un registro que no existe («${v}»)`);
+    else if(t==='n'&&(typeof v!=='number'||!isFinite(v)||v<0))bad('debe ser un número igual o mayor que cero');
+    n[f]=v}
+   out[k].push(n)})});
+ return er.length?{er}:{er,data:out};
+}
+let S=empty0();
+const ui={v:'my-day',form:null,edit:null,pre:null,fid:null,q:'',msg:'',out:'',inp:'',errs:[],conf:null,booted:false,pend:null,pv:'lista',av:'hoy',gs:'metas',gcfg:false,
+ f:{q:'',stage:'',source:'',channel:'',st:'todos'}};
+const cById=id=>S.contacts.find(c=>c.id===id),cname=id=>(cById(id)||{}).name||'';
+const act=c=>!c.archived&&!c.dnc&&!CLOSED.includes(c.stage);
+const lastC=id=>S.ints.filter(i=>i.contactId===id).map(i=>i.date).sort().pop()||'';
+const relCount=id=>S.ints.filter(x=>x.contactId===id).length+S.stageHist.filter(x=>x.contactId===id).length+S.tasks.filter(x=>x.contactId===id).length+S.opps.filter(x=>x.contactId===id).length;
+const cnt=d=>`${d.contacts.length} prospectos, ${d.ints.length} interacciones, ${d.tasks.length} actividades y ${d.opps.length} oportunidades`;
+const DBN='personal-crm',STO='kv',KEY='dataset',LSK='personal-crm:dataset';
+const PS={kind:'none',status:'init',last:null,err:'',paused:false,raw:null,persisted:null};
+let rev=0,savedRev=0,saving=false,timer=null;
+const tmo=(p,ms)=>Promise.race([p,new Promise((_,j)=>setTimeout(()=>j(Object.assign(new Error('timeout'),{name:'Timeout'})),ms))]);
+const errMsg=e=>{const n=e&&e.name;return n==='QuotaExceededError'?'El almacenamiento del navegador está lleno.':n==='Timeout'?'El navegador tardó demasiado en responder.':n==='SecurityError'?'El navegador bloquea el almacenamiento en este contexto.':n==='SyntaxError'?'Los datos guardados no se pueden leer.':'Error de almacenamiento'+(n?' ('+n+')':'')+'.'};
+const fdt=i=>{const d=new Date(i);return isNaN(d)?'':d.toLocaleString(LOC,{dateStyle:'medium',timeStyle:'short'})};
+function idbDo(mode,fn){return new Promise((res,rej)=>{let q;try{q=indexedDB.open(DBN,1)}catch(e){return rej(e)}
+ q.onupgradeneeded=()=>{q.result.createObjectStore(STO)};q.onerror=()=>rej(q.error||Error('idb'));q.onblocked=()=>rej(Object.assign(Error('blocked'),{name:'Blocked'}));
+ q.onsuccess=()=>{const db=q.result;let out;try{const t=db.transaction(STO,mode),r=fn(t.objectStore(STO));r.onsuccess=()=>{out=r.result};t.oncomplete=()=>{db.close();res(out)};t.onerror=t.onabort=()=>{db.close();rej(t.error||Error('tx'))}}catch(e){db.close();rej(e)}}})}
+
+const BKEY='dataset-v1-backup';
+const backup=()=>{const o={app:'personal-crm',v:SCHEMA,exportedAt:new Date().toISOString()};COLS.forEach(k=>o[k]=S[k]);return o};
+const envelope=data=>({app:'personal-crm',v:SCHEMA,savedAt:new Date().toISOString(),data:data||S});
+const lsk=k=>k===KEY?LSK:LSK+':'+k;
+const Store={
+ async init(){try{if(typeof indexedDB!=='undefined'&&indexedDB){await tmo(idbDo('readonly',s=>s.get(KEY)),3000);PS.kind='indexeddb';return}}catch(e){}
+  try{localStorage.setItem(LSK+':p','1');localStorage.removeItem(LSK+':p');PS.kind='localstorage'}catch(e){PS.kind='none'}},
+ async read(k=KEY){if(PS.kind==='indexeddb'){const v=await tmo(idbDo('readonly',s=>s.get(k)),5000);return v===undefined?null:v}
+  const t=localStorage.getItem(lsk(k));if(t===null)return null;try{return JSON.parse(t)}catch(e){e.raw=t;throw e}},
+ async write(env,k=KEY){if(PS.kind==='indexeddb')return tmo(idbDo('readwrite',s=>s.put(env,k)),8000);localStorage.setItem(lsk(k),JSON.stringify(env))}
+};
+/* Al iniciar: se lee lo guardado antes de escribir. Si es v1 (v0.3): se valida, se guarda una copia aparte (y se verifica),
+   se migra, se escribe y se vuelve a leer para verificar. Ante cualquier fallo no se toca lo original y el guardado queda en pausa. */
+async function boot(){
+ try{await Store.init()}catch(e){PS.kind='none'}
+ if(PS.kind==='none')PS.status='off';
+ else try{const env=await Store.read();
+  if(env===null)PS.status='empty';
+  else{const r=env&&typeof env==='object'?validate(env.data):{er:['Formato de almacenamiento desconocido.']};
+   if(r.er.length){PS.paused=true;PS.status='corrupt';PS.err='Los datos guardados no son válidos: '+r.er.slice(0,2).join(' ');try{PS.raw=JSON.stringify(env)}catch(e){}}
+   else if(r.migrated){try{
+     if(await Store.read(BKEY)===null){await Store.write(env,BKEY);if(JSON.stringify(await Store.read(BKEY))!==JSON.stringify(env))throw Error('verificación de la copia')}
+     const ne=envelope(r.data);await Store.write(ne);const chk=await Store.read();if(JSON.stringify(chk.data)!==JSON.stringify(r.data))throw Error('verificación de la migración');
+     S=r.data;PS.last=ne.savedAt;PS.status='ok';PS.mig=cnt(S)}
+    catch(e){PS.paused=true;PS.status='migerr';PS.err='No se pudo migrar tus datos de la versión anterior; no se modificó nada de lo original. Detalle: '+errMsg(e);try{PS.raw=JSON.stringify(env)}catch(x){}S=empty0()}}
+   else{S=r.data;PS.last=typeof env.savedAt==='string'?env.savedAt:null;PS.status='ok'}}
+  try{PS.hasV1=(await Store.read(BKEY))!==null}catch(e){}
+ }catch(e){PS.paused=true;PS.status='readerr';PS.err=errMsg(e);PS.raw=(e&&e.raw)||null}
+ try{if(navigator.storage&&navigator.storage.persisted)PS.persisted=await navigator.storage.persisted()}catch(e){}
+ ui.booted=true;render();
+}
+const touch=()=>{rev++;if(PS.kind!=='none'&&!PS.paused){PS.status='pending';clearTimeout(timer);timer=setTimeout(flush,250)}refresh()};
+async function flush(){
+ if(saving||PS.paused||PS.kind==='none')return;saving=true;
+ try{while(savedRev!==rev){const r=rev,env=envelope();await Store.write(env);savedRev=r;PS.last=env.savedAt;PS.err='';PS.status=savedRev===rev?'ok':'pending'}}
+ catch(e){PS.status='error';PS.err=errMsg(e)}
+ saving=false;refresh();
+}
+function pstate(){const t=PS.last?fdt(PS.last):'';
+ if(PS.kind==='none')return['err','Sin guardado automático en este navegador. Descarga respaldos.'];
+ if(PS.paused)return['err','Guardado en pausa. Revisa Ajustes y datos.'];
+ if(PS.status==='error')return['err','No se pudo guardar el último cambio.'];
+ if(rev!==savedRev)return['','Guardando…'];
+ if(savedRev>0)return['ok','Guardado en este dispositivo'+(t?' · '+t:'')];
+ if(PS.status==='ok')return['ok','Datos cargados del dispositivo'+(t?' · último guardado '+t:'')];
+ return['','Aún no hay cambios guardados'];}
+const chipHtml=()=>`<i></i><span>${esc(pstate()[1])}</span>`;
+function statHtml(){const t=pstate()[1],k={indexeddb:'IndexedDB',localstorage:'localStorage (alternativo)',none:'Ninguno disponible'}[PS.kind],row=(a,b)=>`<div class="st"><span>${a}</span><span class="mute" style="text-align:right">${b}</span></div>`;
+ return row('Método de almacenamiento',k)+row('Estado',esc(t))+row('Último guardado correcto',PS.last?fdt(PS.last):'Ninguno todavía')+
+  (PS.persisted===true?row('Protección del navegador','Almacenamiento persistente'):PS.persisted===false?row('Protección del navegador','No garantizada: el navegador podría borrar los datos'):'')+
+  (PS.err?row('Detalle',esc(PS.err)):'')+
+  `<div class="row wrap" style="margin-top:10px">${PS.status==='error'?'<button class="btn sm" data-a="retry">Reintentar guardado</button>':''}${PS.raw?'<button class="btn sm" data-a="showRaw">Ver datos guardados</button>':''}${PS.paused?`<button class="btn sm d" data-a="fresh">${ui.conf==='fresh'?'¿Seguro? Se descartan los datos guardados':'Descartar y empezar de nuevo'}</button>`:''}</div>`}
+function refresh(){const c=$('pchip'),p=$('pstat');if(c){c.className='chip '+pstate()[0];c.innerHTML=chipHtml()}if(p)p.innerHTML=statHtml()}
+const flushNow=()=>{if(rev!==savedRev&&!PS.paused){clearTimeout(timer);flush()}};
+addEventListener('pagehide',flushNow);document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')flushNow()});
+addEventListener('beforeunload',e=>{if(rev>0&&(PS.kind==='none'||PS.paused||PS.status==='error')){e.preventDefault();e.returnValue=''}});
+
+
+/* 3. FORMULARIOS */
+const FORMS={
+ contact:{col:'contacts',pre:'c',n:'prospecto',g:'o',f:[{k:'name',l:'Nombre completo',req:1},{k:'phone',l:'Teléfono (con código de país)',t:'tel'},{k:'source',l:'Fuente de contacto',t:'dl',o:SOURCES},{k:'stage',l:'Etapa',t:'sel',o:STAGES,def:()=>'nuevo'},{k:'reason',l:'Motivo del cambio de etapa (opcional)',ed:1},{k:'nextAction',l:'Próxima acción'},{k:'nextDate',l:'Fecha de próxima acción',t:'date'},
+  {k:'city',l:'Ciudad',m:1},{k:'country',l:'País',m:1},{k:'channel',l:'Canal preferido',t:'dl',o:CHANNELS,m:1},{k:'occupation',l:'Ocupación',m:1},{k:'motivation',l:'Motivación o interés',m:1},{k:'notes',l:'Notas personales',t:'area',m:1},{k:'firstContact',l:'Fecha del primer contacto',t:'date',m:1,def:T},{k:'email',l:'Correo electrónico',t:'email',m:1},{k:'company',l:'Empresa',m:1}]},
+ int:{col:'ints',pre:'i',n:'interacción',g:'a',f:[{k:'contactId',l:'Prospecto',t:'contact',req:1},{k:'type',l:'Tipo de interacción',t:'sel',o:ITYPES,def:()=>'seguimiento'},{k:'date',l:'Fecha',t:'date',def:T},{k:'time',l:'Hora (opcional)',t:'time'},{k:'channel',l:'Canal utilizado',t:'dl',o:CHANNELS},{k:'summary',l:'Resumen de la conversación',t:'area'},{k:'result',l:'Resultado'},{k:'nextAction',l:'Próxima acción'},{k:'nextDate',l:'Fecha de próxima acción',t:'date'},
+  {k:'interest',l:'Interés demostrado',t:'sel',o:INTEREST,m:1},{k:'objections',l:'Dudas u objeciones',t:'area',m:1},{k:'oppId',l:'Oportunidad relacionada',t:'opp',m:1},{k:'notes',l:'Notas adicionales',t:'area',m:1}]},
+ task:{col:'tasks',pre:'t',n:'actividad',g:'a',f:[{k:'title',l:'Título',req:1},{k:'type',l:'Tipo',t:'sel',o:ATYPES,def:()=>'tarea'},{k:'date',l:'Fecha',t:'date',def:T},{k:'time',l:'Hora (opcional)',t:'time'},{k:'priority',l:'Prioridad',t:'sel',o:PRIOS,def:()=>'media'},{k:'contactId',l:'Prospecto (opcional)',t:'contact'},{k:'status',l:'Estado',t:'sel',o:STATUS,def:()=>'pendiente',ed:1},
+  {k:'oppId',l:'Oportunidad (opcional)',t:'opp',m:1},{k:'desc',l:'Descripción',t:'area',m:1},{k:'notes',l:'Notas',t:'area',m:1}]},
+ opp:{col:'opps',pre:'o',n:'oportunidad',g:'a',f:[{k:'title',l:'Nombre',req:1},{k:'contactId',l:'Prospecto',t:'contact'},{k:'value',l:'Valor potencial (opcional)',t:'number'},{k:'stage',l:'Etapa',t:'sel',o:ETAPAS,def:()=>'Lead'},{k:'desc',l:'Descripción',t:'area',m:1},{k:'notes',l:'Notas',t:'area',m:1}]}};
+function chStage(c,to,reason){S.stageHist.push({id:uid('h'),contactId:c.id,from:c.stage,to,at:new Date().toISOString(),reason:reason||''});c.stage=to;if(to==='no_contactar')c.dnc=true}
+function chOpp(o,to){S.oppHist.push({id:uid('g'),oppId:o.id,from:o.stage,to,at:new Date().toISOString()});o.stage=to;o.updated=T()}
+function fixRefs(){const c=new Set(S.contacts.map(x=>x.id)),o=new Set(S.opps.map(x=>x.id));
+ ['ints','tasks','opps'].forEach(k=>S[k].forEach(x=>{if(x.contactId&&!c.has(x.contactId))x.contactId='';if(x.oppId&&!o.has(x.oppId))x.oppId=''}));
+ S.stageHist=S.stageHist.filter(h=>c.has(h.contactId));S.oppHist=S.oppHist.filter(h=>o.has(h.oppId))}
+/* 3b. ACCIONES */
+const say=(m,errs)=>{ui.msg=m;ui.errs=errs||[];render()};
+const val=id=>($(id)?$(id).value.trim():'');
+const closeForm=()=>{ui.form=null;ui.edit=null;ui.pre=null};
+const dl=(name,text,mime)=>{try{const u=URL.createObjectURL(new Blob([text],{type:mime})),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);return true}catch(e){return false}};
+const CSVS={
+ contacts:['prospectos',['id','nombre','telefono','ciudad','pais','fuente','canal','ocupacion','motivacion','notas','primer_contacto','etapa','proxima_accion','fecha_proxima','no_contactar','archivado','correo','empresa'],c=>[c.id,c.name,c.phone,c.city,c.country,c.source,c.channel,c.occupation,c.motivation,c.notes,c.firstContact,L(STAGES,c.stage),c.nextAction,c.nextDate,c.dnc?'sí':'no',c.archived?'sí':'no',c.email,c.company]],
+ ints:['interacciones',['id','prospecto_id','prospecto','fecha','hora','canal','tipo','resumen','resultado','interes','dudas','proxima_accion','fecha_proxima','notas'],i=>[i.id,i.contactId,cname(i.contactId),i.date,i.time,i.channel,L(ITYPES,i.type),i.summary,i.result,i.interest,i.objections,i.nextAction,i.nextDate,i.notes]],
+ tasks:['actividades',['id','titulo','tipo','fecha','hora','prioridad','estado','prospecto_id','prospecto','oportunidad_id','descripcion','notas'],t=>[t.id,t.title,L(ATYPES,t.type),t.date,t.time,L(PRIOS,t.priority),L(STATUS,t.status),t.contactId,cname(t.contactId),t.oppId,t.desc,t.notes]],
+ opps:['oportunidades',['id','nombre','prospecto_id','prospecto','descripcion','valor','etapa','creada','actualizada','notas'],o=>[o.id,o.title,o.contactId,cname(o.contactId),o.desc,o.value,L(ETAPAS,o.stage),o.created,o.updated,o.notes]]};
+const csvCell=v=>{v=String(v??'');if(/^(=|@|\t|\r|[+\-](?![\d\s(]))/.test(v))v="'"+v;return '"'+v.replace(/"/g,'""')+'"'};
+const setSt=(c,to,r)=>{if(to===c.stage)return;chStage(c,to,r)};
+const A={
+ nav:t=>{document.body.classList.add('nv');ui.wa=null;ui.watpl=null;ui.gc=null;ui.v=t.dataset.v;closeForm();ui.fid=null;ui.msg='';ui.errs=[];location.hash=ui.v;render();scrollTo(0,0)},
+ go:t=>{document.body.classList.add('nv');ui.wa=null;ui.watpl=null;ui.gc=null;ui.v=t.dataset.v;ui.fid=null;ui.form=t.dataset.f||null;ui.edit=null;ui.pre=t.dataset.f==='task'&&t.dataset.t?{type:t.dataset.t}:null;ui.msg='';location.hash=ui.v;render();scrollTo(0,0)},
+ ficha:t=>{ui.wa=null;ui.watpl=null;ui.gc=null;ui.v='prospects';ui.fid=t.dataset.id;closeForm();ui.msg='';location.hash='prospects';render();scrollTo(0,0)},
+ back:()=>{ui.wa=null;ui.watpl=null;ui.gc=null;ui.fid=null;closeForm();render()},
+ form:t=>{ui.edit=null;ui.pre=t.dataset.c?{contactId:t.dataset.c}:null;ui.form=ui.form===t.dataset.f&&!t.dataset.c?null:t.dataset.f;ui.msg='';render();if(t.dataset.c)scrollTo(0,0)},
+ edit:t=>{ui.form=t.dataset.k;ui.edit=t.dataset.id;ui.pre=null;ui.msg='';render();scrollTo(0,0)},
+ save:t=>{const k=t.dataset.k,sp=FORMS[k],v={},ed=ui.edit;
+  sp.f.forEach(f=>{const e=$('f-'+f.k);v[f.k]=e?e.value.trim():(f.def?f.def():'')});
+  const miss=sp.f.find(f=>f.req&&!v[f.k]);if(miss)return say(`Completa el campo «${miss.l}».`);
+  for(const f of sp.f){if(f.t==='date'&&!v[f.k]&&!['nextDate','firstContact'].includes(f.k))v[f.k]=T();
+   if(f.t==='date'&&v[f.k]&&!okDate(v[f.k]))return say(`La fecha de «${f.l}» no es válida.`);if(f.t==='time'&&v[f.k]&&!okTime(v[f.k]))return say('La hora no es válida.')}
+  if('value' in v){v.value=Number(v.value||0);if(!isFinite(v.value)||v.value<0)return say('El valor debe ser un número igual o mayor que cero.')}
+  const reason=v.reason;delete v.reason;const list=S[sp.col];let r;
+  if(ed){r=list.find(x=>x.id===ed);if(!r)return say('No se encontró el registro que intentas editar.');
+   if(k==='contact'&&v.stage!==r.stage)chStage(r,v.stage,reason);if(k==='opp'&&v.stage!==r.stage)chOpp(r,v.stage);
+   Object.assign(r,v);delete r.demo;if(k==='opp')r.updated=T()}
+  else{r={id:uid(sp.pre),...v};if(k==='opp')r.created=r.updated=T();if(k==='contact'&&v.stage==='no_contactar')r.dnc=true;list.push(r);
+   if(k==='int'){const c=cById(v.contactId);if(c&&(v.nextAction||v.nextDate)){c.nextAction=v.nextAction;c.nextDate=v.nextDate}}}
+  closeForm();touch();say(ed?'Cambios aplicados.':`${sp.g==='a'?'Nueva':'Nuevo'} ${sp.n} agregad${sp.g}.`)},
+ del:t=>{const k=t.dataset.k,id=t.dataset.id,sp=FORMS[k];if(ui.conf!==id){ui.conf=id;return render()}
+  S[sp.col]=S[sp.col].filter(x=>x.id!==id);if(k==='opp')fixRefs();ui.conf=null;if(ui.edit===id)closeForm();if(k==='contact')ui.fid=null;touch();say('Registro eliminado.')},
+ setStatus:t=>{const x=S.tasks.find(q=>q.id===t.dataset.id);x.status=t.dataset.s;touch();render()},
+ dnc:t=>{const c=cById(t.dataset.id);if(ui.conf!=='dnc'+c.id){ui.conf='dnc'+c.id;return render()}ui.conf=null;
+  if(c.dnc){c.dnc=false;if(c.stage==='no_contactar')chStage(c,'pausa','Indicador «No contactar» retirado');c.dnc=false;touch();say('Se retiró el indicador «No contactar». La etapa pasó a «En pausa / futuro».')}
+  else{c.dnc=true;setSt(c,'no_contactar','Marcado como no contactar');touch();say('Prospecto marcado como «No contactar». Se conserva su historial.')}},
+ archive:t=>{const c=cById(t.dataset.id);c.archived=!c.archived;touch();ui.fid=null;say(c.archived?'Prospecto archivado. Su historial se conserva.':'Prospecto restaurado.')},
+ pv:t=>{ui.pv=t.dataset.x;render()},av:t=>{ui.av=t.dataset.x;render()},gs:t=>{ui.gs=t.dataset.x;render()},
+ gcfg:()=>{ui.gcfg=!ui.gcfg;render()},
+ saveGoals:()=>{const next=[];for(const[k]of IND)for(const[p]of PERIODS){const e=$(`g-${k}-${p}`),s=e?e.value.trim():'';if(!s)continue;const n=Number(s);
+   if(!Number.isInteger(n)||n<0)return say('Las metas deben ser números enteros iguales o mayores que cero.');if(n>0){const old=S.goals.find(g=>g.key===k&&g.period===p);next.push({id:old?old.id:uid('m'),key:k,period:p,target:n})}}
+  S.goals=next;ui.gcfg=false;touch();say('Metas actualizadas.')},
+ man:t=>{const k=t.dataset.k,d=T(),dlt=t.dataset.d==='-1';
+  if(dlt){const i=S.manual.map(m=>m.key===k&&m.date===d).lastIndexOf(true);if(i<0)return say('No hay resultados manuales de hoy para quitar.');S.manual.splice(i,1)}
+  else S.manual.push({id:uid('r'),key:k,date:d,n:1});touch();render()},
+ backup:()=>{const text=JSON.stringify(backup(),null,2);ui.out=text;const ok=dl(`personal-crm-respaldo-${T()}.json`,text,'application/json');
+  say(ok?'Se solicitó la descarga del respaldo. Si tu navegador no la inicia (por ejemplo, dentro de Claude), copia el texto de abajo y guárdalo en un archivo .json.':'No se pudo iniciar la descarga. Copia el texto de abajo y guárdalo en un archivo .json.')},
+ csv:t=>{const[n,h,f]=CSVS[t.dataset.k],text='\uFEFF'+[h.join(',')].concat(S[t.dataset.k].map(r=>f(r).map(csvCell).join(','))).join('\r\n');ui.out=text;
+  const ok=dl(`personal-crm-${n}-${T()}.csv`,text,'text/csv;charset=utf-8');say(`CSV de ${n} generado (${S[t.dataset.k].length} filas). ${ok?'Se solicitó la descarga; ':''}Si no se descarga, copia el texto de abajo.`)},
+ importJson:()=>stage($('imp').value,'texto pegado'),
+ confirmImport:()=>{const p=ui.pend;if(!p)return;S=p.data;ui.pend=null;ui.inp='';ui.fid=null;closeForm();ui.errs=[];
+  if(PS.paused){PS.paused=false;PS.raw=null;PS.err='';PS.status='pending'}touch();say(`Importación aplicada: ${cnt(S)}. Revisa el estado del guardado en la parte superior.`)},
+ cancelImport:()=>{ui.pend=null;say('Importación cancelada. Tus datos no cambiaron.')},
+ retry:()=>{PS.status='pending';PS.err='';refresh();flush()},
+ showRaw:()=>{ui.out=PS.raw||'';say(PS.raw?'Datos guardados mostrados abajo para que puedas copiarlos.':'No hay texto recuperable.')},
+ fresh:()=>{if(ui.conf!=='fresh'){ui.conf='fresh';return render()}PS.paused=false;PS.raw=null;PS.err='';S=empty0();ui.conf=null;touch();say('Se descartaron los datos guardados que no eran válidos. Empiezas con datos vacíos.')},
+ showV1:async()=>{try{const e=await Store.read(BKEY);ui.out=e?JSON.stringify(e.data,null,2):'';say(e?'Copia de la versión anterior mostrada abajo.':'No hay copia anterior.')}catch(e){say('No se pudo leer la copia anterior.')}},
+ restoreV1:async()=>{try{const e=await Store.read(BKEY);if(!e)return say('No hay copia anterior.');stage(JSON.stringify(e.data),'copia anterior (v0.3)')}catch(e){say('No se pudo leer la copia anterior.')}},
+ selOut:()=>{const o=$('out');if(o){o.focus();o.select()}},
+ clearDemo:()=>{if(ui.conf!=='clr'){ui.conf='clr';return render()}['contacts','ints','tasks','opps'].forEach(k=>S[k]=S[k].filter(x=>!x.demo));fixRefs();ui.conf=null;ui.fid=null;touch();say('Se eliminaron los registros de demostración heredados de la v0.3.')},
+ wipe:()=>{if(ui.conf!=='wipe'){ui.conf='wipe';return render()}S=empty0();ui.out='';ui.fid=null;ui.conf=null;touch();say('Se borraron todos los datos.')},
+ noop:()=>{},
+ waFix:t=>{const c=cById(t.dataset.id);if(!c)return;A.edit({dataset:{k:'contact',id:c.id}});const e=$('f-phone');if(e){if(t.dataset.m==='505')e.value='+505 '+waInfo(c.phone).d;e.focus()}},
+ copyPhone:async t=>{const c=cById(t.dataset.id);if(!c)return;const w=waInfo(c.phone),txt=w.st==='ok'?'+'+w.d:(c.phone||'');if(!txt)return say('Este prospecto no tiene teléfono para copiar.');
+  let ok=false;try{await navigator.clipboard.writeText(txt);ok=true}catch(e){try{const x=document.createElement('textarea');x.value=txt;x.style.cssText='position:fixed;opacity:0';document.body.appendChild(x);x.select();ok=document.execCommand('copy');x.remove()}catch(e2){}}
+  say(ok?`Número copiado: ${txt}`:`No se pudo copiar automáticamente. Número: ${txt}`)},
+ gc:t=>{const s=t.dataset.s,id=t.dataset.id;ui.gc=ui.gc&&ui.gc.s===s&&ui.gc.id===id?null:{s,id};ui.msg='';ui.errs=[];render()},
+ gcGo:()=>{const g=ui.gc;if(!g)return;const ev=gcEvent(g.s,g.id);if(!ev)return say('No se encontró el registro.');
+  const te=$('gc-time'),de=$('gc-dur'),time=te?te.value.trim():'',dur=de?de.value:'30';g.time=time;g.dur=dur;
+  if(!okDate(ev.date))return say('La fecha no es válida. Edita el registro antes de crear el evento.');
+  if(!time)return say('Indica la hora de inicio para crear el evento.');if(!okTime(time))return say('La hora de inicio no es válida.');
+  const m=Number(dur);if(!Number.isInteger(m)||m<5||m>1440)return say('La duración no es válida.');
+  const a=gcTs(ev.date,time),url=gcUrl(ev,a,a+m*60000);g.url=url;
+  const el=document.createElement('a');el.href=url;el.target='_blank';el.rel='noopener';document.body.appendChild(el);el.click();el.remove();
+  say('Se abrió Google Calendar con el evento preparado. Revísalo y guárdalo allí. Si no se abrió, usa «Abrir de nuevo».')},
+ theme:()=>{const r=document.documentElement,d=r.dataset.theme==='dark'||(!r.dataset.theme&&matchMedia('(prefers-color-scheme:dark)').matches);r.dataset.theme=d?'light':'dark';render()}
+};
+function stage(txt,src){txt=String(txt).replace(/^\uFEFF/,'');let d;ui.pend=null;
+ try{d=JSON.parse(txt)}catch(e){ui.inp=src==='texto pegado'?txt:'';return say('No se importó nada: el contenido no es un JSON válido. Tus datos actuales no cambiaron.')}
+ const r=validate(d);
+ if(r.er.length){ui.inp=src==='texto pegado'?txt:'';const n=r.er.length;return say(`No se importó nada: se encontraron ${n} problema${n>1?'s':''}. Tus datos actuales no cambiaron.`,r.er.slice(0,10).concat(n>10?[`… y ${n-10} más.`]:[]))}
+ ui.pend={data:r.data,src,at:d.exportedAt||null,mig:!!r.migrated};ui.inp='';say('El archivo es válido. Confirma si quieres reemplazar tus datos.')}
+function readFile(f){if(f.size>20e6)return say('El archivo es demasiado grande (máximo 20 MB).');
+ const r=new FileReader();r.onload=()=>stage(r.result,f.name);r.onerror=()=>say('No se pudo leer el archivo.');r.readAsText(f)}
+document.addEventListener('click',e=>{if(!ui.booted)return;const t=e.target.closest('[data-a]');if(!t||!A[t.dataset.a])return;
+ if(!['del','wipe','clearDemo','fresh','dnc'].includes(t.dataset.a))ui.conf=null;A[t.dataset.a](t)});
+document.addEventListener('change',e=>{const t=e.target,d=t.dataset||{};
+ if(d.cs){const c=cById(d.cs);setSt(c,t.value,val('sr'));touch();render()}
+ if(d.os){chOpp(S.opps.find(o=>o.id===d.os),t.value);touch();render()}
+ if(d.fk){ui.f[d.fk]=t.value;const l=$('plist');if(l)l.innerHTML=prospectList()}
+ if(t.id==='fil'&&t.files&&t.files[0]){const f=t.files[0];t.value='';readFile(f)}});
+document.addEventListener('input',e=>{const d=e.target.dataset||{};if(d.fk==='q'){ui.f.q=e.target.value;const l=$('plist');if(l)l.innerHTML=prospectList()}});
+const P={sun:'M12 8a4 4 0 100 8 4 4 0 000-8zM12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6L7 7M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4',cal:'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4',users:'M16 19v-1a4 4 0 00-4-4H8a4 4 0 00-4 4v1M10 11a3 3 0 100-6 3 3 0 000 6M20 19v-1a3 3 0 00-2-2.8',target:'M12 3a9 9 0 100 18 9 9 0 000-18zM12 8a4 4 0 100 8 4 4 0 000-8z',pulse:'M3 12h4l3-8 4 16 3-8h4',chart:'M4 20V10M10 20V4M16 20v-7M22 20H2',db:'M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3zM4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6',plus:'M12 5v14M5 12h14',check:'M5 12l5 5 9-10',trash:'M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13',back:'M15 5l-7 7 7 7',x:'M6 6l12 12M18 6L6 18',pen:'M4 20h4L19 9l-4-4L4 16v4zM13.5 6.5l4 4',up:'M12 19V5M6 11l6-6 6 6',down:'M12 5v14M6 13l6 6 6-6',flat:'M5 12h14',wa:'M3 21l1.6-4.6A9 9 0 1 1 8 19.6L3 21zM9.2 8.6c0 3.4 2.9 6.2 6.2 6.2l1-1.4-2-1-.9.8c-1-.4-2-1.4-2.4-2.4l.8-.9-1-2-1.7.7z'};
+const ic=n=>`<svg class="i" viewBox="0 0 24 24"><path d="${P[n]}"/></svg>`;
+const demoTag=r=>r.demo?'<span class="tag demo">demo</span>':'';
+const empty=(t,b)=>`<div class="empty">${t}${b||''}</div>`;
+const opts=(a,sel)=>a.map(x=>`<option value="${x[0]}"${x[0]===sel?' selected':''}>${x[1]}</option>`).join('');
+const head=(t,s,btn)=>`<div class="row sp wrap"><div><h1>${t}</h1><p class="sub">${s}</p></div>${btn||''}</div>`;
+const addBtn=(f,l)=>`<button class="btn p" data-a="form" data-f="${f}">${ic('plus')} ${l}</button>`;
+const editBtn=(k,id)=>`<button class="btn sm" data-a="edit" data-k="${k}" data-id="${id}" aria-label="Editar">${ic('pen')}</button>`;
+const delBtn=(k,id)=>`<button class="btn sm d" data-a="del" data-k="${k}" data-id="${id}" aria-label="Eliminar">${ui.conf===id?'¿Seguro?':ic('trash')}</button>`;
+
+const barRow=(l,txt,p)=>`<div style="margin-bottom:10px"><div class="row sp"><span>${l}</span><span class="mute">${txt}</span></div><div class="bar"><i style="width:${Math.min(100,p)}%"></i></div></div>`;
+const cOpts=sel=>'<option value="">Sin prospecto</option>'+S.contacts.filter(c=>!c.archived||c.id===sel).sort((a,b)=>a.name.localeCompare(b.name,'es')).map(c=>`<option value="${esc(c.id)}"${c.id===sel?' selected':''}>${esc(c.name)}</option>`).join('');
+const oOpts=sel=>'<option value="">Sin oportunidad</option>'+S.opps.map(o=>`<option value="${esc(o.id)}"${o.id===sel?' selected':''}>${esc(o.title)}</option>`).join('');
+function formHtml(k){
+ if(ui.form!==k)return'';const sp=FORMS[k],r=ui.edit?(S[sp.col].find(x=>x.id===ui.edit)||{}):{...(ui.pre||{})};
+ const fld=f=>{const v=r[f.k]??(f.k==='firstContact'&&ui.edit?'':(f.def?f.def():'')),id='f-'+f.k;let inp;
+  if(f.t==='sel')inp=`<select id="${id}">${opts(f.o,v)}</select>`;else if(f.t==='contact')inp=`<select id="${id}">${cOpts(v)}</select>`;else if(f.t==='opp')inp=`<select id="${id}">${oOpts(v)}</select>`;
+  else if(f.t==='area')inp=`<textarea id="${id}" style="min-height:80px;font:inherit">${esc(v)}</textarea>`;
+  else inp=`<input id="${id}" type="${f.t==='number'?'number':f.t==='dl'?'text':f.t||'text'}" value="${esc(v)}"${f.t==='number'?' min="0" step="any" inputmode="decimal"':''}${f.t==='dl'?` list="dl-${f.k}" autocomplete="off"`:''}>${f.t==='dl'?`<datalist id="dl-${f.k}">${f.o.map(x=>`<option value="${esc(x)}">`).join('')}</datalist>`:''}`;
+  return `<label for="${id}">${f.l}</label>${inp}${f.k==='phone'?ccHelper():''}`};
+ const fs=sp.f.filter(f=>!(f.ed&&!ui.edit)),main=fs.filter(f=>!f.m).map(fld).join(''),more=fs.filter(f=>f.m);
+ return `<div class="card"><b>${ui.edit?'Editar '+sp.n:(sp.g==='a'?'Nueva ':'Nuevo ')+sp.n}</b>${main}${more.length?`<details${ui.edit?' open':''} style="margin-top:6px"><summary class="mute" style="min-height:44px;display:flex;align-items:center">Más datos (opcionales)</summary>${more.map(fld).join('')}</details>`:''}<div class="row wrap" style="margin-top:14px"><button class="btn p" data-a="save" data-k="${k}">${ui.edit?'Guardar cambios':'Guardar '+sp.n}</button><button class="btn" data-a="form" data-f="${k}">Cancelar</button></div></div>`;
+}
+const seg=(a,items,cur)=>`<div class="seg">${items.map(([k,l])=>`<button class="${cur===k?'on':''}" data-a="${a}" data-x="${k}">${l}</button>`).join('')}</div>`;
+const link=c=>c?`<a href="javascript:void 0" data-a="ficha" data-id="${c.id}" style="color:var(--acc)">${esc(c.name)}</a>`:'';
+const taskRow=k=>{const c=cById(k.contactId),od=k.status==='pendiente'&&k.date<T();
+ return `<div class="card row ${k.status!=='pendiente'?'done':''}" style="padding:10px 12px"><button class="chk ${k.status==='completada'?'on':''}" data-a="setStatus" data-s="${k.status==='pendiente'?'completada':'pendiente'}" data-id="${k.id}" aria-label="${k.status==='pendiente'?'Marcar como completada':'Reabrir'}">${k.status==='completada'?ic('check'):''}</button><div class="grow"><div class="t">${esc(k.title)}${k.status==='cancelada'?'<span class="tag">cancelada</span>':''}${k.priority==='alta'?'<span class="tag hi">alta</span>':''}${demoTag(k)}</div><div class="mute ${od?'warn':''}">${od?'Vencida · ':''}${fdate(k.date)}${k.time?' '+k.time:''} · ${L(ATYPES,k.type)}${c?' · ':''}${link(c)}</div>${k.status==='pendiente'?gcLink('task',k.id):''}</div>${k.status==='pendiente'?`<button class="btn sm" data-a="setStatus" data-s="cancelada" data-id="${k.id}" aria-label="Cancelar actividad">${ic('x')}</button>`:''}${editBtn('task',k.id)}${delBtn('task',k.id)}</div>${gcPanel('task',k.id)}`};
+const contactRow=(c,sub)=>`<div class="card row" data-a="ficha" data-id="${c.id}" style="cursor:pointer;min-height:56px"><div class="grow"><b>${esc(c.name)}</b>${c.dnc?'<span class="tag dnc">No contactar</span>':''}${demoTag(c)}<div class="mute">${sub}</div></div>${waIco(c)}</div>`;
+const nextTxt=c=>c.nextAction||c.nextDate?`${esc(c.nextAction)||'Acción'}${c.nextDate?' · '+fdate(c.nextDate):''}`:'Sin próxima acción';
+function prospectList(){
+ const f=ui.f,q=f.q.toLowerCase(),t=T();
+ const l=S.contacts.filter(c=>{if(f.st==='archivados'?!c.archived:c.archived)return false;
+  if(f.stage&&c.stage!==f.stage)return false;if(f.source&&(c.source||'').toLowerCase()!==f.source.toLowerCase())return false;if(f.channel&&(c.channel||'').toLowerCase()!==f.channel.toLowerCase())return false;
+  if(f.st==='activos'&&!act(c))return false;if(f.st==='pausa'&&c.stage!=='pausa')return false;if(f.st==='sin_accion'&&(c.nextDate||!act(c)))return false;
+  if(f.st==='vencidos'&&!(act(c)&&c.nextDate&&c.nextDate<t))return false;if(f.st==='dnc'&&!c.dnc)return false;
+  return !q||[c.name,c.phone,c.city,c.source,c.occupation].join(' ').toLowerCase().includes(q)}).sort((a,b)=>a.name.localeCompare(b.name,'es'));
+ if(!l.length)return empty(S.contacts.length?'Ningún prospecto coincide con los filtros.':'Aún no tienes prospectos. Registra el primero con el botón «Prospecto»: solo necesitas un nombre.');
+ if(ui.pv==='embudo')return `<div class="cols">${STAGES.map(([s,n])=>{const x=l.filter(c=>c.stage===s);return `<div class="col" style="min-width:220px"><h2>${n} <span class="mute">${x.length}</span></h2>${x.length?x.map(c=>`<div class="card"><div data-a="ficha" data-id="${c.id}" style="cursor:pointer"><b>${esc(c.name)}</b>${c.dnc?'<span class="tag dnc">No contactar</span>':''}<div class="mute">${nextTxt(c)}</div></div><select data-cs="${c.id}" aria-label="Cambiar etapa" style="margin-top:8px">${opts(STAGES,c.stage)}</select></div>`).join(''):'<div class="mute">—</div>'}</div>`}).join('')}</div>`;
+ return l.map(c=>contactRow(c,`${L(STAGES,c.stage)}${c.source?' · '+esc(c.source):''}${c.city?' · '+esc(c.city):''}<br><span class="${c.nextDate&&c.nextDate<t&&!c.dnc?'warn':''}">${c.dnc?'No sugerir seguimiento':nextTxt(c)}</span>`)).join('');
+}
+const info=(l,v)=>v?`<div class="st"><span>${l}</span><span class="mute" style="text-align:right">${esc(v)}</span></div>`:'';
+function fichaView(c){
+ const tl=[...S.ints.filter(i=>i.contactId===c.id).map(i=>({d:i.date+'T'+(i.time||'00:00'),k:'i',r:i})),...S.stageHist.filter(h=>h.contactId===c.id).map(h=>({d:loc(h.at),k:'s',r:h}))].sort((a,b)=>b.d.localeCompare(a.d));
+ const digits=(c.phone||'').replace(/\D/g,''),opp=S.opps.filter(o=>o.contactId===c.id),tk=S.tasks.filter(x=>x.contactId===c.id&&x.status==='pendiente'),rc=relCount(c.id),lc=lastC(c.id);
+ return `<div class="row sp wrap"><button class="btn sm" data-a="back">${ic('back')} Prospectos</button><button class="btn sm" data-a="edit" data-k="contact" data-id="${c.id}">${ic('pen')} Editar</button></div>
+ <h1 style="margin-top:12px">${esc(c.name)}</h1><p class="sub">${L(STAGES,c.stage)}${c.archived?' · Archivado':''}</p>
+ ${c.dnc?'<div class="note err"><b>No contactar.</b> No se sugieren seguimientos ni aparece en las prioridades. Su historial se conserva.</div>':''}
+ ${formHtml('contact')}${formHtml('int')}${formHtml('task')}
+ <div class="row wrap" style="margin-bottom:10px"><button class="btn p" data-a="form" data-f="int" data-c="${c.id}">${ic('plus')} Interacción</button><button class="btn" data-a="form" data-f="task" data-c="${c.id}">${ic('plus')} Actividad</button></div>
+ ${waCard(c)}
+ <div class="card">${info('Teléfono',c.phone)}${info('Correo',c.email)}${info('Ciudad / país',[c.city,c.country].filter(Boolean).join(', '))}${info('Fuente',c.source)}${info('Canal preferido',c.channel)}${info('Ocupación',c.occupation)}${info('Motivación o interés',c.motivation)}${info('Primer contacto',c.firstContact&&fdate(c.firstContact))}${info('Último contacto',lc&&fdate(lc))}${info('Próxima acción',c.nextAction||c.nextDate?nextTxt(c).replace(/&amp;/g,'&'):'')}${c.notes?`<p style="margin:10px 0 0">${esc(c.notes)}</p>`:''}${!c.phone&&!c.notes&&!c.source?'<p class="mute" style="margin:0">Aún no hay más datos. Usa «Editar» para ampliar la ficha.</p>':''}</div>
+ ${gcRowC(c)}
+ <div class="card"><b>Cambiar etapa</b><label for="sr">Motivo (opcional)</label><input id="sr" placeholder="Por qué cambia"><label for="cs">Nueva etapa</label><select id="cs" data-cs="${c.id}">${opts(STAGES,c.stage)}</select></div>
+ <h2>Historial (${tl.length})</h2>${tl.length?tl.map(e=>e.k==='i'?`<div class="tl"><b>${L(ITYPES,e.r.type)}</b> · ${fdate(e.r.date)}${e.r.time?' '+e.r.time:''}${e.r.channel?' · '+esc(e.r.channel):''}${e.r.summary?`<div>${esc(e.r.summary)}</div>`:''}${e.r.result?`<div class="mute">Resultado: ${esc(e.r.result)}</div>`:''}${e.r.nextAction?`<div class="mute">Próxima acción: ${esc(e.r.nextAction)}${e.r.nextDate?' · '+fdate(e.r.nextDate):''}</div>`:''}</div>`:`<div class="tl"><b>Cambio de etapa</b> · ${fdate(e.d.slice(0,10))}<div>${e.r.from?L(STAGES,e.r.from):'—'} → ${L(STAGES,e.r.to)}</div>${e.r.reason?`<div class="mute">${esc(e.r.reason)}</div>`:''}</div>`).join(''):empty('Todavía no hay interacciones ni cambios de etapa.')}
+ <div class="mute" style="margin:6px 0">${opp.length} oportunidades · ${tk.length} actividades pendientes</div>
+ <div class="card"><b>Gestión del prospecto</b><div class="row wrap" style="margin-top:10px"><button class="btn sm ${c.dnc?'':'d'}" data-a="dnc" data-id="${c.id}">${ui.conf==='dnc'+c.id?'¿Seguro?':c.dnc?'Retirar «No contactar»':'Marcar «No contactar»'}</button><button class="btn sm" data-a="archive" data-id="${c.id}">${c.archived?'Restaurar':'Archivar'}</button>${rc===0?delBtn('contact',c.id):''}</div>${rc?`<p class="mute" style="margin-bottom:0">Tiene ${rc} registros relacionados, por eso no se puede eliminar. Archívalo para conservar su historial.</p>`:''}</div>`;
+}
+const cntInd=(k,a,b)=>{const r=d=>d>=a&&d<=b,it=t=>S.ints.filter(i=>i.type===t&&r(i.date)).length;
+ return k==='nuevos'?S.contacts.filter(c=>c.firstContact&&r(c.firstContact)).length:k==='frio'?it('frio'):k==='conv'?it('conversacion'):k==='llamadas'?it('llamada'):k==='pres_hec'?it('presentacion'):k==='seg'?it('seguimiento'):k==='reun'?it('reunion'):S.manual.filter(m=>m.key===k&&r(m.date)).reduce((s,m)=>s+m.n,0)};
+const tgt=(k,p)=>(S.goals.find(g=>g.key===k&&g.period===p)||{}).target||0;
+const goalBar=(k,p,a,b)=>{const t=tgt(k,p),n=cntInd(k,a,b);return t?barRow(`${p==='dia'?'Hoy':'Semana'}: ${n} de ${t}`,`Faltan ${Math.max(0,t-n)} · ${Math.round(100*n/t)}%`,100*n/t):`<div class="mute">${p==='dia'?'Hoy':'Semana'}: ${n} · sin meta</div>`};
+/* Indicador visual (solo lectura): interacciones de los últimos 7 días y tendencia frente a los 7 previos. No modifica datos. */
+const pulse=()=>{const t=T(),d=[...Array(7)].map((_,i)=>addD(t,i-6)),n=d.map(x=>S.ints.filter(i=>i.date===x).length),cur=n.reduce((a,b)=>a+b,0),prev=S.ints.filter(i=>i.date>=addD(t,-13)&&i.date<=addD(t,-7)).length,df=cur-prev,mx=Math.max(1,...n),
+ bars=n.map((v,i)=>{const h=Math.max(2,Math.round(32*v/mx));return `<rect class="${i===6?'now':''}" x="${i*20}" y="${36-h}" width="12" height="${h}" rx="2"/>`}).join(''),
+ tr=!cur&&!prev?['','flat','Sin actividad registrada todavía']:df>0?['up','up',`+${df} frente a los 7 días previos`]:df<0?['down','down',`−${-df} frente a los 7 días previos`]:['','flat','Igual que los 7 días previos'];
+ return `<div class="card pulse"><div class="row sp"><div><span class="lbl">Interacciones · últimos 7 días</span><b class="big">${cur}</b></div><svg class="spark" viewBox="0 0 132 36" role="img" aria-label="Interacciones por día, últimos 7 días">${bars}</svg></div><div class="trend ${tr[0]}">${ic(tr[1])}<span>${tr[2]}</span></div></div>`};
+/* ===== v0.5: integraciones por enlace (sin servidores, sin OAuth, sin APIs). No escriben ni cambian datos del CRM. ===== */
+const CCS=[['505','Nicaragua'],['1','Estados Unidos / Canadá'],['52','México'],['502','Guatemala'],['503','El Salvador'],['504','Honduras'],['506','Costa Rica'],['507','Panamá'],['57','Colombia'],['58','Venezuela'],['51','Perú'],['593','Ecuador'],['56','Chile'],['54','Argentina'],['55','Brasil'],['53','Cuba'],['34','España'],['44','Reino Unido']];
+/* Normaliza un teléfono para wa.me: quita espacios, guiones, paréntesis, puntos, «+» y prefijo «00». No modifica el dato guardado.
+   ok = 9–15 dígitos (o con «+»/«00»); local = 8 dígitos sin prefijo internacional (falta código de país); invalido; vacio. */
+const waInfo=p=>{const s=String(p||'').trim();if(!s)return{st:'vacio',d:''};
+ if(/[^\d\s+\-().]/.test(s)||s.slice(1).includes('+'))return{st:'invalido',d:''};
+ const hasP=s[0]==='+',h00=!hasP&&/^00/.test(s.replace(/[\s\-().]/g,''));let d=s.replace(/\D/g,'');if(h00)d=d.replace(/^00/,'');
+ if(d.length<8||d.length>15||d[0]==='0')return{st:'invalido',d};
+ return{st:(!hasP&&!h00&&d.length===8)?'local':'ok',d}};
+const waUrl=(d,m)=>'https://wa.me/'+d+(m&&m.trim()?'?text='+encodeURIComponent(m):'');
+const WAT=[['saludo','Saludo'],['seguimiento','Seguimiento'],['recordatorio','Recordatorio de acción'],['blanco','Mensaje en blanco']];
+const waText=(k,c)=>{const f=(c.name||'').trim().split(/\s+/)[0]||'';
+ return k==='saludo'?`Hola ${f}, ¿cómo estás?`:k==='seguimiento'?`Hola ${f}, te escribo para dar seguimiento a nuestra conversación. ¿Tienes un momento para hablar?`:k==='recordatorio'?`Hola ${f}, te escribo para confirmar ${c.nextAction?c.nextAction.toLowerCase():'lo que acordamos'}${c.nextDate?' ('+fdate(c.nextDate)+')':''}.`:''};
+const waIco=c=>{const w=waInfo(c.phone);return w.st==='ok'&&!c.dnc?`<a class="btn sm wa" href="${waUrl(w.d)}" target="_blank" rel="noopener" data-a="noop" aria-label="Abrir WhatsApp con ${esc(c.name)}">${ic('wa')}</a>`:''};
+const waCard=c=>{if(c.dnc)return'';const w=waInfo(c.phone),h=`<div class="card"><div class="row" style="margin-bottom:6px"><span class="waic">${ic('wa')}</span><b>WhatsApp</b></div>`;
+ if(w.st==='vacio')return h+`<p class="mute" style="margin-top:0">Este prospecto no tiene teléfono registrado. Agrégalo, con código de país, para abrir WhatsApp.</p><button class="btn sm p" data-a="waFix" data-id="${c.id}" data-m="add">${ic('plus')} Agregar teléfono</button></div>`;
+ if(w.st==='invalido')return h+`<p class="mute" style="margin-top:0">El teléfono «${esc(c.phone)}» no parece válido: debe tener entre 8 y 15 dígitos, solo números y, si quieres, «+», espacios, guiones o paréntesis.</p><button class="btn sm" data-a="waFix" data-id="${c.id}" data-m="edit">${ic('pen')} Corregir teléfono</button></div>`;
+ if(w.st==='local')return h+`<p class="mute" style="margin-top:0">Al número «${esc(c.phone)}» le falta el código de país, necesario para abrir WhatsApp. Tu dato guardado no se cambia hasta que confirmes la edición.</p><div class="row wrap"><button class="btn sm p" data-a="waFix" data-id="${c.id}" data-m="505">Completar con +505 (Nicaragua)</button><button class="btn sm" data-a="waFix" data-id="${c.id}" data-m="edit">${ic('pen')} Editar teléfono</button></div></div>`;
+ const k=ui.watpl||'saludo',msg=ui.wa==null?waText(k,c):ui.wa;
+ return h+`<label for="wa-tpl">Plantilla</label><select id="wa-tpl" data-wat>${opts(WAT,k)}</select><label for="wa-msg">Mensaje (opcional, puedes editarlo)</label><textarea id="wa-msg" style="min-height:84px;font:inherit">${esc(msg)}</textarea><div class="row wrap" style="margin-top:12px"><a id="wa-open" class="btn p" data-d="${w.d}" href="${waUrl(w.d,msg)}" target="_blank" rel="noopener">${ic('wa')} Abrir WhatsApp</a><button class="btn" data-a="copyPhone" data-id="${c.id}">Copiar número</button></div><p class="mute" style="margin-bottom:0">Se abre WhatsApp (o WhatsApp Business, según la app que uses en tu dispositivo) con el mensaje preparado para +${w.d}. Tú confirmas el envío allí: el CRM no envía nada.</p></div>`};
+const ccHelper=()=>`<select data-cc aria-label="Código de país" style="margin-top:6px"><option value="">+ Agregar código de país…</option>${CCS.map(([c,n])=>`<option value="${c}">+${c} · ${n}</option>`).join('')}</select><div class="mute" style="margin-top:4px">Ejemplo de Nicaragua: +505 8888 1234. El número se guarda tal como lo escribes.</div>`;
+/* Google Calendar por enlace oficial (action=TEMPLATE). Horas locales con ctz=America/Managua; sin OAuth. */
+const GCDUR=[[15,'15 minutos'],[30,'30 minutos'],[45,'45 minutos'],[60,'1 hora'],[90,'1 hora 30 min'],[120,'2 horas'],[180,'3 horas']];
+const gcTs=(d,t)=>{const[y,m,dd]=d.split('-').map(Number),[h,mi]=t.split(':').map(Number);return Date.UTC(y,m-1,dd,h,mi)};
+const gcF=ms=>{const x=new Date(ms);return x.getUTCFullYear()+pad(x.getUTCMonth()+1)+pad(x.getUTCDate())+'T'+pad(x.getUTCHours())+pad(x.getUTCMinutes())+'00'};
+const gcEndTxt=(d,t,m)=>{if(!okDate(d)||!okTime(t))return'Indica la hora de inicio para calcular la hora de finalización.';const a=gcTs(d,t),b=a+Number(m)*60000,x=new Date(b);return `Termina a las ${pad(x.getUTCHours())}:${pad(x.getUTCMinutes())}${gcF(b).slice(0,8)!==gcF(a).slice(0,8)?' (al día siguiente)':''}`};
+const gcUrl=(ev,a,b)=>{const q=(k,v)=>k+'='+encodeURIComponent(v);return 'https://calendar.google.com/calendar/render?action=TEMPLATE&'+[q('text',ev.title.slice(0,200)),q('dates',gcF(a)+'/'+gcF(b)),q('details',ev.desc.slice(0,1500)),q('ctz','America/Managua')].join('&')};
+const gcEvent=(s,id)=>{const addC=(t,c)=>c&&!t.toLowerCase().includes(c.name.toLowerCase())?t+' · '+c.name:t,foot='Creado desde Personal CRM';
+ if(s==='task'){const k=S.tasks.find(x=>x.id===id);if(!k)return null;const c=cById(k.contactId);
+  return{title:addC(k.title,c),date:k.date,time:k.time||'',desc:[`Tipo: ${L(ATYPES,k.type)}`,c?`Prospecto: ${c.name}`:'',`Prioridad: ${L(PRIOS,k.priority)}`,k.desc,k.notes,foot].filter(Boolean).join('\n')}}
+ if(s==='contact'){const c=cById(id);if(!c)return null;return{title:addC(c.nextAction||'Seguimiento',c),date:c.nextDate,time:'',desc:['Tipo: Seguimiento',`Prospecto: ${c.name}`,`Etapa: ${L(STAGES,c.stage)}`,foot].join('\n')}}
+ if(s==='int'){const i=S.ints.find(x=>x.id===id);if(!i)return null;const c=cById(i.contactId);
+  return{title:addC(i.nextAction||'Seguimiento',c),date:i.nextDate,time:'',desc:['Tipo: Seguimiento',c?`Prospecto: ${c.name}`:'',`Interacción previa: ${L(ITYPES,i.type)} del ${fdate(i.date)}`,i.result?`Resultado: ${i.result}`:'',foot].filter(Boolean).join('\n')}}
+ return null};
+const gcLink=(s,id)=>`<div><button class="lnk" data-a="gc" data-s="${s}" data-id="${id}">${ic('cal')} Agregar a Google Calendar</button></div>`;
+const gcPanel=(s,id)=>{const g=ui.gc;if(!g||g.s!==s||g.id!==id)return'';const ev=gcEvent(s,id);if(!ev)return'';
+ const time=g.time!==undefined?g.time:ev.time,dur=g.dur||'30',bad=!okDate(ev.date);
+ return `<div class="gcp"><b>Agregar a Google Calendar</b><div class="mute">${esc(ev.title)} · ${bad?'sin fecha válida':fdate(ev.date)}</div>${bad?'<p class="warn">La fecha no es válida. Edita el registro antes de crear el evento.</p>':`<div class="row wrap"><div class="grow"><label for="gc-time">Hora de inicio${ev.time?'':' (obligatoria)'}</label><input id="gc-time" type="time" value="${esc(time)}"></div><div class="grow"><label for="gc-dur">Duración</label><select id="gc-dur">${GCDUR.map(([m,l])=>`<option value="${m}"${String(m)===String(dur)?' selected':''}>${l}</option>`).join('')}</select></div></div><div class="mute" id="gc-end" style="margin-top:6px">${gcEndTxt(ev.date,time,dur)}</div>`}<div class="row wrap" style="margin-top:12px">${bad?'':`<button class="btn p" data-a="gcGo">${ic('cal')} Abrir Google Calendar</button>`}<button class="btn" data-a="gc" data-s="${s}" data-id="${id}">Cerrar</button>${g.url?`<a class="btn" href="${esc(g.url)}" target="_blank" rel="noopener">Abrir de nuevo</a>`:''}</div><p class="mute" style="margin-bottom:0">Se abre Google Calendar con los datos completados; tú revisas y guardas el evento. Zona horaria: America/Managua. La hora y la duración solo se usan para el evento: no se guardan en el CRM.</p></div>`};
+const gcRowC=c=>c.nextDate&&!c.dnc?gcLink('contact',c.id)+gcPanel('contact',c.id):'';
+const V={
+'my-day':()=>{const t=T(),okc=act,pend=S.tasks.filter(x=>x.status==='pendiente').sort((a,b)=>(a.date+(a.time||'')).localeCompare(b.date+(b.time||''))),
+  ovC=S.contacts.filter(c=>okc(c)&&c.nextDate&&c.nextDate<t),tdC=S.contacts.filter(c=>okc(c)&&c.nextDate===t),sin=S.contacts.filter(c=>act(c)&&!c.nextDate),ovT=pend.filter(x=>x.date<t),tdT=pend.filter(x=>x.date===t),oth=pend.filter(x=>x.date>t).slice(0,5),
+  alive=S.contacts.filter(c=>!c.archived),dg=IND.filter(([k])=>tgt(k,'dia')),done=dg.filter(([k])=>cntInd(k,'0000',t)>=0&&cntInd(k,t,t)>=tgt(k,'dia')).length;
+ const sec=(h,n,body,em)=>`<h2>${h} <span class="mute">${n}</span></h2>${n?body:`<div class="mute" style="margin-bottom:8px">${em}</div>`}`;
+ return head('Mi día',new Date().toLocaleDateString(LOC,{weekday:'long',day:'numeric',month:'long'}))+
+ `<div class="row wrap" style="margin-bottom:12px"><button class="btn p" data-a="go" data-v="prospects" data-f="contact">${ic('plus')} Prospecto</button><button class="btn" data-a="go" data-v="followup" data-f="int">${ic('plus')} Interacción</button><button class="btn" data-a="go" data-v="agenda" data-f="task">${ic('plus')} Tarea</button><button class="btn" data-a="go" data-v="agenda" data-f="task" data-t="seguimiento">${ic('plus')} Seguimiento</button><button class="btn" data-a="go" data-v="agenda">Agenda</button><button class="btn" data-a="go" data-v="opportunities">Oportunidades</button></div>`+
+ `<div class="grid"><div class="kpi"><b>${alive.length}</b><span>Prospectos</span></div><div class="kpi"><b>${S.contacts.filter(act).length}</b><span>Activos</span></div><div class="kpi"><b class="${ovC.length+ovT.length?'warn':''}">${ovC.length+ovT.length}</b><span>Seguimientos vencidos</span></div><div class="kpi"><b>${tdC.length+tdT.length}</b><span>Acciones para hoy</span></div><div class="kpi"><b>${sin.length}</b><span>Sin próxima acción</span></div><div class="kpi"><b>${pend.length}</b><span>Tareas pendientes</span></div><div class="kpi"><b>${pend.filter(x=>x.type==='presentacion'&&x.date>=t).length}</b><span>Presentaciones programadas</span></div><div class="kpi"><b>${dg.length?done+' / '+dg.length:'—'}</b><span>Metas de hoy cumplidas</span></div></div>`+pulse()+
+ (!alive.length&&!S.tasks.length?empty('Aún no hay datos. Empieza registrando tu primer prospecto.'):'')+
+ `<h2>Prioridades de hoy</h2>`+
+ sec('1. Seguimientos vencidos',ovC.length+ovT.length,ovC.map(c=>contactRow(c,`${nextTxt(c)} · <span class="warn">vencida</span>`)).join('')+ovT.map(taskRow).join(''),'Nada vencido.')+
+ sec('2. Acciones de hoy',tdC.length+tdT.length,tdC.map(c=>contactRow(c,nextTxt(c))).join('')+tdT.map(taskRow).join(''),'No hay acciones programadas para hoy.')+
+ sec('3. Prospectos sin próxima acción',sin.length,sin.slice(0,8).map(c=>contactRow(c,L(STAGES,c.stage))).join('')+(sin.length>8?`<div class="mute">y ${sin.length-8} más en Prospectos (filtro «Sin próxima acción»).</div>`:''),'Todos tus prospectos activos tienen próxima acción.')+
+ sec('4. Otras tareas pendientes',oth.length,oth.map(taskRow).join(''),'No hay más tareas pendientes.')},
+'prospects':()=>{const c=ui.fid&&cById(ui.fid);if(c)return fichaView(c);ui.fid=null;const f=ui.f,srcs=[...new Set([...SOURCES,...S.contacts.map(c=>c.source).filter(Boolean)])],chs=[...new Set([...CHANNELS,...S.contacts.map(c=>c.channel).filter(Boolean)])],on=f.stage||f.source||f.channel||f.st!=='todos';
+ return head('Prospectos',S.contacts.filter(c=>!c.archived).length+' registrados',addBtn('contact','Prospecto'))+formHtml('contact')+seg('pv',[['lista','Lista'],['embudo','Embudo']],ui.pv)+
+ `<input data-fk="q" type="search" placeholder="Buscar nombre, teléfono, ciudad, fuente u ocupación" aria-label="Buscar" value="${esc(f.q)}"><details${on?' open':''} style="margin:8px 0 12px"><summary class="mute" style="min-height:44px;display:flex;align-items:center">Filtros${on?' (activos)':''}</summary>
+ <label>Etapa</label><select data-fk="stage"><option value="">Todas</option>${opts(STAGES,f.stage)}</select><label>Fuente</label><select data-fk="source"><option value="">Todas</option>${srcs.map(x=>`<option${x===f.source?' selected':''}>${esc(x)}</option>`).join('')}</select><label>Canal</label><select data-fk="channel"><option value="">Todos</option>${chs.map(x=>`<option${x===f.channel?' selected':''}>${esc(x)}</option>`).join('')}</select><label>Mostrar</label><select data-fk="st">${opts([['todos','Todos'],['activos','Prospectos activos'],['pausa','En pausa'],['sin_accion','Sin próxima acción'],['vencidos','Seguimientos vencidos'],['dnc','No contactar'],['archivados','Archivados']],f.st)}</select></details><div id="plist">${prospectList()}</div>`},
+'followup':()=>{const t=T(),att=S.contacts.filter(c=>act(c)&&c.nextDate&&c.nextDate<t),all=S.ints.slice().sort((a,b)=>(b.date+(b.time||'')).localeCompare(a.date+(a.time||''))),lim=60;
+ return head('Seguimiento',all.length+' interacciones registradas',addBtn('int','Interacción'))+formHtml('int')+
+ (att.length?`<h2>Requieren atención <span class="mute">${att.length}</span></h2>`+att.slice(0,5).map(c=>contactRow(c,`${nextTxt(c)} · <span class="warn">vencida</span>`)).join(''):'')+
+ `<h2>Historial</h2>`+(all.length?all.slice(0,lim).map(i=>{const c=cById(i.contactId);return `<div class="card"><div class="row"><div class="grow"><b>${L(ITYPES,i.type)}</b> · <span class="mute">${fdate(i.date)}${i.time?' '+i.time:''}${i.channel?' · '+esc(i.channel):''}</span>${demoTag(i)}<div>${c?link(c):'<span class="mute">Sin prospecto</span>'}</div></div>${editBtn('int',i.id)}${delBtn('int',i.id)}</div>${i.summary?`<div>${esc(i.summary)}</div>`:''}${i.result?`<div class="mute">Resultado: ${esc(i.result)}</div>`:''}${i.nextAction?`<div class="mute">Próxima acción: ${esc(i.nextAction)}${i.nextDate?' · '+fdate(i.nextDate):''}</div>`:''}${i.nextDate?gcLink('int',i.id):''}</div>${gcPanel('int',i.id)}`}).join('')+(all.length>lim?`<div class="mute">Se muestran las ${lim} más recientes. El resto está en la ficha de cada prospecto y en el CSV.</div>`:''):empty('Aún no hay interacciones. Registra una desde aquí o desde la ficha de un prospecto.'))},
+'agenda':()=>{const t=T(),[w0,w1]=wk(),pend=S.tasks.filter(x=>x.status==='pendiente'),srt=(a,b)=>(a.date+(a.time||'')).localeCompare(b.date+(b.time||'')),
+  sets={hoy:pend.filter(x=>x.date===t).sort(srt),vencidas:pend.filter(x=>x.date<t).sort(srt),proximas:pend.filter(x=>x.date>t).sort(srt),semana:pend.filter(x=>x.date>=w0&&x.date<=w1).sort(srt),historial:S.tasks.filter(x=>x.status!=='pendiente').sort((a,b)=>srt(b,a))},cur=sets[ui.av];
+ return head('Agenda',pend.length+' actividades pendientes',addBtn('task','Actividad'))+formHtml('task')+seg('av',[['hoy',`Hoy (${sets.hoy.length})`],['vencidas',`Vencidas (${sets.vencidas.length})`],['proximas','Próximas'],['semana','Semana'],['historial','Historial']],ui.av)+
+ (cur.length?cur.map(taskRow).join(''):empty(ui.av==='vencidas'?'No tienes actividades vencidas.':ui.av==='historial'?'Aún no hay actividades completadas o canceladas.':'No hay actividades en esta vista.'))+'<p class="mute">La app no envía notificaciones ni recordatorios. Si los quieres, usa «Agregar a Google Calendar» en cada actividad.</p>'},
+'opportunities':()=>head('Oportunidades',S.opps.length+' registradas',addBtn('opp','Oportunidad'))+formHtml('opp')+
+ `<div class="cols">${ETAPAS.map(([s,nm])=>{const l=S.opps.filter(x=>x.stage===s);return `<div class="col"><h2>${nm} <span class="mute">${l.length} · ${money(l.reduce((a,x)=>a+x.value,0))}</span></h2>${l.length?l.map(x=>{const h=S.oppHist.filter(g=>g.oppId===x.id).sort((a,b)=>b.at.localeCompare(a.at)),ni=S.ints.filter(i=>i.oppId===x.id).length,nt=S.tasks.filter(i=>i.oppId===x.id).length;return `<div class="card"><b>${esc(x.title)}</b>${demoTag(x)}<div class="mute">${esc(cname(x.contactId))||'Sin prospecto'} · ${money(x.value)}</div>${x.desc?`<div>${esc(x.desc)}</div>`:''}<div class="row" style="margin-top:8px"><select data-os="${x.id}" aria-label="Etapa">${opts(ETAPAS,x.stage)}</select>${editBtn('opp',x.id)}${delBtn('opp',x.id)}</div><details><summary class="mute" style="min-height:44px;display:flex;align-items:center">Historial y relaciones</summary><div class="mute">Creada: ${x.created?fdate(x.created):'sin fecha'} · Actualizada: ${x.updated?fdate(x.updated):'sin fecha'}<br>${ni} interacciones · ${nt} actividades relacionadas${x.notes?`<br>${esc(x.notes)}`:''}</div>${h.length?h.map(g=>`<div class="mute">${fdate(loc(g.at).slice(0,10))}: ${g.from?L(ETAPAS,g.from):'—'} → ${L(ETAPAS,g.to)}</div>`).join(''):'<div class="mute">Sin cambios de etapa registrados.</div>'}</details></div>`}).join(''):empty('Sin oportunidades')}</div>`}).join('')}</div>`,
+'goals':()=>{const t=T(),[w0,w1]=wk();
+ const metas=()=>`<div class="row sp wrap"><span class="mute">Hoy y semana (lunes a domingo). Los resultados se calculan con tus registros reales.</span><button class="btn sm" data-a="gcfg">${ui.gcfg?'Cerrar':'Configurar metas'}</button></div>`+
+  (ui.gcfg?`<div class="card"><b>Metas configurables</b><p class="mute">Déjalas vacías si no quieres meta. No hay cifras predeterminadas.</p>${IND.map(([k,n])=>`<label>${n}</label><div class="row"><input id="g-${k}-dia" type="number" min="0" step="1" inputmode="numeric" placeholder="Meta diaria" value="${tgt(k,'dia')||''}" aria-label="${n}: meta diaria"><input id="g-${k}-semana" type="number" min="0" step="1" inputmode="numeric" placeholder="Meta semanal" value="${tgt(k,'semana')||''}" aria-label="${n}: meta semanal"></div>`).join('')}<div class="row wrap" style="margin-top:14px"><button class="btn p" data-a="saveGoals">Guardar metas</button><button class="btn" data-a="gcfg">Cancelar</button></div></div>`:'')+
+  IND.map(([k,n])=>`<div class="card"><b>${n}</b>${MAN.includes(k)?'<span class="tag">manual</span>':'<span class="tag">calculado</span>'}<div style="margin-top:8px">${goalBar(k,'dia',t,t)}${goalBar(k,'semana',w0,w1)}</div>${MAN.includes(k)?`<div class="row" style="margin-top:6px"><button class="btn sm" data-a="man" data-k="${k}" data-d="-1" aria-label="Quitar uno">−1</button><button class="btn sm p" data-a="man" data-k="${k}" data-d="1" aria-label="Sumar uno">+1</button><span class="mute">No se puede deducir de otros registros; súmalo a mano.</span></div>`:''}</div>`).join('');
+ const stats=()=>{const al=S.contacts.filter(c=>!c.archived),bs=k=>al.filter(c=>c.stage===k).length,mx=Math.max(1,...STAGES.map(([k])=>bs(k))),srcs={};al.forEach(c=>{const s=c.source||'Sin fuente';srcs[s]=(srcs[s]||0)+1});
+  const days=[...Array(7)].map((_,i)=>addD(t,i-6)),dn=days.map(d=>S.ints.filter(x=>x.date===d).length),dm=Math.max(1,...dn),sg=S.tasks.filter(x=>x.type==='seguimiento'),reached=k=>new Set([...S.stageHist.filter(h=>h.to===k).map(h=>h.contactId),...S.contacts.filter(c=>c.stage===k).map(c=>c.id)]).size;
+  const wi=cntInd('seg',w0,w1);
+  return `<div class="grid"><div class="kpi"><b>${al.length}</b><span>Total de prospectos</span></div><div class="kpi"><b>${S.ints.length}</b><span>Interacciones</span></div><div class="kpi"><b>${S.opps.length}</b><span>Oportunidades</span></div><div class="kpi"><b>${wi}</b><span>Seguimientos esta semana</span></div></div>`+
+  `<h2>Prospectos por etapa</h2><div class="card">${al.length?STAGES.map(([k,n])=>barRow(n,bs(k),100*bs(k)/mx)).join(''):'<div class="mute">Sin prospectos todavía.</div>'}</div>`+
+  `<h2>Fuente de los prospectos</h2><div class="card">${al.length?Object.entries(srcs).sort((a,b)=>b[1]-a[1]).map(([k,n])=>barRow(esc(k),n,100*n/al.length)).join(''):'<div class="mute">Sin datos.</div>'}</div>`+
+  `<h2>Actividad de los últimos 7 días</h2><div class="card">${days.map((d,i)=>barRow(fdate(d),dn[i],100*dn[i]/dm)).join('')}<div class="mute">Interacciones registradas por día.</div></div>`+
+  `<h2>Seguimientos programados</h2><div class="card"><div class="st"><span>Completados</span><span>${sg.filter(x=>x.status==='completada').length}</span></div><div class="st"><span>Pendientes</span><span>${sg.filter(x=>x.status==='pendiente'&&x.date>=t).length}</span></div><div class="st"><span class="warn">Vencidos</span><span class="warn">${sg.filter(x=>x.status==='pendiente'&&x.date<t).length}</span></div></div>`+
+  `<h2>Oportunidades por etapa</h2><div class="card">${ETAPAS.map(([k,n])=>{const l=S.opps.filter(o=>o.stage===k);return barRow(n,`${l.length} · ${money(l.reduce((a,o)=>a+o.value,0))}`,S.opps.length?100*l.length/S.opps.length:0)}).join('')}</div>`+
+  `<h2>Prospectos que llegaron a cada etapa</h2><div class="card">${S.stageHist.length?STAGES.map(([k,n])=>`<div class="st"><span>${n}</span><span class="mute">${reached(k)}</span></div>`).join('')+'<div class="mute" style="margin-top:8px">Cuenta prospectos distintos según el historial de etapas. No se calculan tasas de conversión.</div>':'<div class="mute">Aún no hay cambios de etapa registrados, así que no se pueden calcular conversiones.</div>'}</div>`};
+ return head('Metas y estadísticas','Resultados calculados a partir de tus registros.')+seg('gs',[['metas','Metas'],['stats','Estadísticas']],ui.gs)+(ui.gs==='metas'?metas():stats())},
+'data':()=>head('Ajustes y datos','Guardado local, respaldos y estado del proyecto.')+
+ `<div class="card"><b>Estado del almacenamiento</b><div id="pstat" style="margin-top:6px">${statHtml()}</div></div>`+
+ (PS.mig?`<div class="note"><b>Migración desde la v0.3 completada.</b> Se conservaron ${esc(PS.mig)}. Los datos anteriores se guardaron aparte antes de migrar.</div>`:'')+
+ `<div class="card"><b>Respaldo y restauración</b><p class="mute">El respaldo es un archivo JSON con todos tus datos, la versión del esquema (v${SCHEMA}) y la fecha de exportación. Una importación se valida por completo y pide confirmación antes de reemplazar nada. También acepta respaldos de la v0.3, que se migran al importar.</p><div class="row wrap"><button class="btn p" data-a="backup">Descargar respaldo</button><label class="btn" style="margin:0;color:var(--ink);font-size:inherit">Importar respaldo desde archivo<input id="fil" type="file" accept=".json,application/json" hidden></label></div>${ui.pend?pendHtml():''}${ui.errs.length?`<div class="note err" style="margin-top:10px"><b>Problemas encontrados:</b><ul style="margin:6px 0 0;padding-left:18px">${ui.errs.map(e=>`<li>${esc(e)}</li>`).join('')}</ul></div>`:''}<details style="margin-top:12px"${ui.inp?' open':''}><summary class="mute" style="min-height:44px;display:flex;align-items:center">Importar pegando el texto JSON</summary><textarea id="imp" aria-label="JSON a importar" placeholder="Pega aquí el JSON">${esc(ui.inp)}</textarea><button class="btn" style="margin-top:8px" data-a="importJson">Validar texto</button></details>${ui.out?`<textarea id="out" readonly aria-label="Texto exportado" style="margin-top:10px">${esc(ui.out)}</textarea><button class="btn sm" style="margin-top:8px" data-a="selOut">Seleccionar todo para copiar</button>`:''}</div>`+
+ (PS.hasV1?`<div class="card"><b>Copia de la versión anterior</b><p class="mute">Antes de migrar se guardó una copia de tus datos de la v0.3 en este navegador. Puedes verla para copiarla o restaurarla (con confirmación).</p><div class="row wrap"><button class="btn sm" data-a="showV1">Ver copia anterior</button><button class="btn sm" data-a="restoreV1">Restaurar copia anterior</button></div></div>`:'')+
+ `<div class="card"><b>Exportar a CSV</b><p class="mute">Archivos para hojas de cálculo (UTF-8). Solo sirven para consultar; para restaurar usa el respaldo JSON.</p><div class="row wrap">${Object.entries(CSVS).map(([k,[n]])=>`<button class="btn sm" data-a="csv" data-k="${k}">${n[0].toUpperCase()+n.slice(1)}</button>`).join('')}</div></div>`+
+ `<div class="card"><b>Apariencia</b><div style="margin-top:8px"><button class="btn" data-a="theme">Cambiar tema claro / oscuro</button></div></div>`+
+ `<div class="card"><b>Datos</b><div class="row wrap" style="margin-top:8px">${[...S.contacts,...S.ints,...S.tasks,...S.opps].some(x=>x.demo)?`<button class="btn" data-a="clearDemo">${ui.conf==='clr'?'¿Seguro? Quitar demostración':'Quitar registros de demostración (v0.3)'}</button>`:''}<button class="btn d" data-a="wipe">${ui.conf==='wipe'?'¿Seguro? Se borra TODO':'Borrar todos los datos'}</button></div><p class="mute">Descarga un respaldo antes de borrar.</p></div>`+
+ `<div class="card"><b>Límites del guardado local</b><ul style="margin:8px 0 0;padding-left:18px" class="mute"><li>Los datos se guardan solo en este navegador y en este dispositivo. No hay copia en la nube.</li><li>Se pueden perder si borras los datos del sitio, usas una ventana privada o el navegador libera espacio.</li><li>Dentro de Claude, en un archivo HTML descargado y en distintos navegadores de Android, el almacenamiento puede ser independiente o estar bloqueado: lo guardado en un lugar no aparece en otro.</li><li>Si abres la app en dos pestañas, la que guarde al final reemplaza a la otra.</li><li>Descarga respaldos con regularidad. Es la única copia que controlas.</li></ul></div>`+
+ `<h2>Estado de la versión 0.5</h2><div class="card">${[['Prospectos, etapas e historial de etapas','Implementado'],['Seguimiento: interacciones e historial por prospecto','Implementado'],['Agenda con vistas y estados','Implementado'],['Oportunidades con historial','Implementado'],['Metas y estadísticas','Implementado'],['Migración segura desde v0.3','Implementado'],['WhatsApp: enlaces wa.me con mensaje preparado','Implementado'],['Google Calendar: eventos por enlace (sin OAuth)','Implementado'],['Bloques de trabajo y plantillas','Pendiente'],['Notificaciones, nube, mensajes automáticos','No incluido']].map(r=>`<div class="st"><span>${r[0]}</span><span class="mute">${r[1]}</span></div>`).join('')}</div>`
+};
+const pendHtml=()=>{const p=ui.pend;return `<div class="note err" style="margin-top:10px"><b>Confirma el reemplazo</b><p>El archivo «${esc(p.src)}» es válido y contiene ${cnt(p.data)}${p.at?', exportado el '+fdt(p.at):' (sin fecha de exportación)'}.${p.mig?' Es un respaldo de la versión anterior (v0.3) y se migrará al reemplazar.':''}</p><p>Tus datos actuales (${cnt(S)}) se reemplazarán por completo.${PS.paused?' También se reemplazarán los datos guardados que no se pudieron leer.':''} Si no estás seguro, descarga antes un respaldo.</p><div class="row wrap"><button class="btn p" data-a="confirmImport">Reemplazar mis datos</button><button class="btn" data-a="cancelImport">Cancelar</button></div></div>`};
+/* 4. ESTRUCTURA Y ENRUTADOR */
+const NAV=[['my-day','Mi día','Hoy','sun'],['prospects','Prospectos','Prospectos','users'],['followup','Seguimiento','Seguim.','pulse'],['agenda','Agenda','Agenda','cal'],['opportunities','Oportunidades','Negocios','target'],['goals','Metas y estadísticas','Metas','chart'],['data','Ajustes y datos','Datos','db']];
+function render(){
+ if(!ui.booted){$('app').innerHTML='<main><p class="sub" role="status">Cargando tus datos…</p></main>';return}
+ const fx=document.activeElement&&document.activeElement.dataset&&document.activeElement.dataset.fk==='q';
+ $('app').innerHTML=`<aside class="side"><div class="brand">Personal CRM<small>v0.5 · datos locales</small></div>${NAV.map(n=>`<button class="${ui.v===n[0]?'on':''}" data-a="nav" data-v="${n[0]}">${ic(n[3])}${n[1]}</button>`).join('')}</aside>
+ <main><div id="pchip" class="chip ${pstate()[0]}">${chipHtml()}</div>${ui.msg?`<div class="note msg${ui.errs.length?' err':''}" role="status">${esc(ui.msg)}</div>`:''}${V[ui.v]()}</main>
+ <nav class="tabs" aria-label="Navegación principal">${NAV.map(n=>`<button class="${ui.v===n[0]?'on':''}" data-a="nav" data-v="${n[0]}" aria-label="${n[1]}">${ic(n[3])}<span>${n[2]}</span></button>`).join('')}</nav>`;
+ if(document.body.classList.contains('nv'))setTimeout(()=>document.body.classList.remove('nv'),320);
+ if(fx){const q=document.querySelector('[data-fk=q]');if(q){q.focus();q.setSelectionRange(99,99)}}
+}
+function route(){const h=location.hash.slice(1);if(V[h])ui.v=h}
+addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(V[h]&&h!==ui.v){route();ui.fid=null;render()}});
+/* v0.5: eventos de las integraciones (solo interfaz) */
+document.addEventListener('input',e=>{const t=e.target;if(t.id==='wa-msg'){ui.wa=t.value;const a=$('wa-open');if(a)a.href=waUrl(a.dataset.d,t.value)}});
+document.addEventListener('change',e=>{const t=e.target,d=t.dataset||{};
+ if(d.wat!==undefined){const c=cById(ui.fid);ui.watpl=t.value;ui.wa=c?waText(t.value,c):'';render()}
+ if(d.cc!==undefined&&t.value){const p=$('f-phone');if(!p)return;const code=t.value,v=p.value.trim();let n=v.replace(/\D/g,'');const plus=/^(\+|00)/.test(v);
+  if(plus){n=n.replace(/^00/,'');const old=CCS.map(x=>x[0]).sort((a,b)=>b.length-a.length).find(c=>n.startsWith(c));if(old)n=n.slice(old.length)}
+  else if(n.startsWith(code)&&n.length>=code.length+7)n=n.slice(code.length);
+  p.value='+'+code+(n?' '+n:'');t.value='';p.focus()}
+ if((t.id==='gc-time'||t.id==='gc-dur')&&ui.gc){const g=ui.gc,ev=gcEvent(g.s,g.id),te=$('gc-time'),de=$('gc-dur');if(te)g.time=te.value;if(de)g.dur=de.value;const o=$('gc-end');if(o&&ev)o.textContent=gcEndTxt(ev.date,g.time!==undefined?g.time:ev.time,g.dur||'30')}});
+route();render();boot();
+</script>
+
+<script>
+(() => {
+  let deferredInstall = null;
+  const b = document.createElement('button');
+  b.id = 'pwa-install'; b.type = 'button'; b.textContent = 'Instalar CRM';
+  document.body.appendChild(b);
+  addEventListener('beforeinstallprompt', e => {
+    e.preventDefault(); deferredInstall = e; b.classList.add('show');
+  });
+  b.addEventListener('click', async () => {
+    if (!deferredInstall) return;
+    deferredInstall.prompt();
+    try { await deferredInstall.userChoice; }
+    finally { deferredInstall = null; b.classList.remove('show'); }
+  });
+  addEventListener('appinstalled', () => b.classList.remove('show'));
+  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+    addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js', {scope:'./'}).catch(console.error));
+  }
+})();
+</script>
+
+</body>
+</html>

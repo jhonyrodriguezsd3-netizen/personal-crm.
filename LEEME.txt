@@ -1,0 +1,14 @@
+PERSONAL CRM v0.5 — PAQUETE PWA
+
+Este paquete conserva el CRM y añade manifest, service worker e iconos.
+
+PUBLICAR GRATIS CON GITHUB PAGES
+1. Inicia sesión en https://github.com y crea un repositorio llamado personal-crm.
+2. Sube TODOS los archivos de este paquete, conservando las carpetas.
+3. En el repositorio entra en Settings > Pages.
+4. En Build and deployment elige Deploy from a branch.
+5. Selecciona la rama main y la carpeta /(root); guarda.
+6. Espera la publicación. La URL será similar a https://TU-USUARIO.github.io/personal-crm/
+7. Abre esa URL en Chrome Android y elige Instalar aplicación. Si aparece el botón «Instalar CRM», también puedes usarlo.
+
+MUY IMPORTANTE: antes de cambiar del HTML local a la versión HTTPS, abre el CRM antiguo y ve a Ajustes y datos > Descargar respaldo. La versión HTTPS tendrá almacenamiento independiente. Después de instalar, ve a Ajustes y datos > Importar respaldo desde archivo y selecciona el JSON. El CRM guarda datos localmente; no hay sincronización en la nube. El modo sin conexión queda disponible después de la primera carga con internet.
